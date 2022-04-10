@@ -14,8 +14,6 @@
 				</view>
 				<view class="user__content-extra"  @click.stop="clickFocus()">
 					<slot>  
-						<uni-icons type="star" size="18"style="margin-right: 2px;" v-if="isFocusOn" ></uni-icons>
-						<uni-icons type="star-filled" size="18" style=" color: #FF0000 ; margin-right: 2px;"  v-if="!isFocusOn"></uni-icons>
 						<text :class="isFocusOn?'user__focus-on':'user__focus-off'" >{{isFocusOn?'关注':'已关注' }}</text>
 					</slot>
 				</view>

@@ -15,6 +15,7 @@
       :name="item.name"
       :publishTime="item.publishTime"
       :content="item.content"
+	  :isFocusOn="item.isFocusOn"
       :isLike="item.isLike"
       :isGiveReward="item.isGiveReward"
       :likeNumber="item.likeNumber"
@@ -168,6 +169,9 @@
 			},
 			// 点击聊天
 			clickChat(e){
+				uni.navigateTo({
+					url:"/pages/disconver/discover_desc/discover_desc"
+				})
 			    console.log(e);
 			    console.log('clickChat');
 			},
