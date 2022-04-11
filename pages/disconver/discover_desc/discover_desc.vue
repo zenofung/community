@@ -146,7 +146,7 @@
 
 			<!-- 评论标题 -->
 			<view class='comment  padding-sm bg-white'>
-				<text>全部评论 * 16</text>
+				<text>全部评论 * {{commentSize}}</text>
 			</view>
 			<!-- end -->
 
@@ -226,6 +226,7 @@
 				avatar:"https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1950846641,3729028697&fm=26&gp=0.jpg",
 				userNikename:"zenofung",
 				createTime:"",
+				commentSize:17,
 				attentionStatus:false,
 				//图片
 				imgArr: [

@@ -64,43 +64,43 @@
 				  {id:5,name:'导航条5'},
 				  {id:6,name:'导航条6'},
 				  	],
-		
-				 list:[
-				         {
-				             id:1,
-				             avatar:'https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1950846641,3729028697&fm=26&gp=0.jpg',
-				             name:'小新',
-				             publishTime:1617086756,
-				             content:'中国外交官这样讽加拿大总理，算不算骂？该不该骂？',
-				             imgList:[
-				                 'https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1976832114,2993359804&fm=26&gp=0.jpg',
-				                 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2369680151,826506100&fm=26&gp=0.jpg',
-				             ],
-				             isLike:true,
-				             isGiveReward:true,
-				             likeNumber:2,
-				             giveRewardNumber:2,
-				             chatNumber:2,
-				             isFocusOn:true,
-				         },
+			     list:[],
+				 // list:[
+				 //         {
+				 //             id:1,
+				 //             avatar:'https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1950846641,3729028697&fm=26&gp=0.jpg',
+				 //             name:'小新',
+				 //             publishTime:1617086756,
+				 //             content:'中国外交官这样讽加拿大总理，算不算骂？该不该骂？',
+				 //             imgList:[
+				 //                 'https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1976832114,2993359804&fm=26&gp=0.jpg',
+				 //                 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2369680151,826506100&fm=26&gp=0.jpg',
+				 //             ],
+				 //             isLike:true,
+				 //             isGiveReward:true,
+				 //             likeNumber:2,
+				 //             giveRewardNumber:2,
+				 //             chatNumber:2,
+				 //             isFocusOn:true,
+				 //         },
 				         
-				         {
-				             id:2,
-				             avatar:'https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2291332875,175289127&fm=26&gp=0.jpg',
-				             name:'小白',
-				             publishTime:1617036656,
-				             content:'  足不出户享国内核医学领域顶级专家云诊断，“中山-联影”分子影像远程互联融合创新中心揭牌 ',
-				             imgList:[
-				                 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2369680151,826506100&fm=26&gp=0.jpg',
-				             ],
-				             isLike:false,
-				             isGiveReward:false,
-				             likeNumber:0,
-				             giveRewardNumber:0,
-				             chatNumber:2,
-				             isFocusOn:false,
-				         }
-				 ]
+				 //         {
+				 //             id:2,
+				 //             avatar:'https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2291332875,175289127&fm=26&gp=0.jpg',
+				 //             name:'小白',
+				 //             publishTime:1617036656,
+				 //             content:'  足不出户享国内核医学领域顶级专家云诊断，“中山-联影”分子影像远程互联融合创新中心揭牌 ',
+				 //             imgList:[
+				 //                 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2369680151,826506100&fm=26&gp=0.jpg',
+				 //             ],
+				 //             isLike:false,
+				 //             isGiveReward:false,
+				 //             likeNumber:0,
+				 //             giveRewardNumber:0,
+				 //             chatNumber:2,
+				 //             isFocusOn:false,
+				 //         }
+				 // ]
 				  //end
 			}
 		},
@@ -116,9 +116,15 @@
 		},
 		onShow:function(){
 			
+			// async request(){
+			//     let data =  this.$myRequest({url:'/article/list?limit=3&page=1&user_id=1503007372722741250'})
+			//     console.log(data);
+			// }
+
+			 console.log(res)
 			//导航条的高度
 			// this.SelectorQuery()
-			
+		
 		},
 		//上拉刷新
 		onPullDownRefresh:function() {
