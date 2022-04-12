@@ -6,25 +6,26 @@
 			<view class='user-top  padding-sm bg-white '>
 
 				<view class='user-top-1'>
-					<image :src="avatar"></image>
+					<image :src="article.userVo.userProtrait"></image>
 				</view>
 				<view class='user-top-2'>
 					<view class='user-top-2_1'>
-						<text class='text-df text-black text-weight'>{{userNikename}}</text>
+						<text class='text-df text-black text-weight'>{{article.userVo.userNikename}}</text>
 					</view>
 					<view>
-						<text class='text-xs text-grey'>1小时前来过</text>
+						<text class='text-xs text-grey'>{{ timestampFormat(article.createTime) }}</text>
 					</view>
 				</view>
 				<view class='user-top-3'>
-					<button bindtap='attention' @click="clickFocus()"  class="cu-btn round line-black" role="button"
-						aria-disabled="false">{{attentionStatus?"已关注":"+关注"}}</button>
+					<button bindtap='attention' @click="clickFocus(article.attentionStatus,article.userVo.id)"
+						class="cu-btn round line-black" role="button"
+						aria-disabled="false">{{article.attentionStatus?"已关注":"+关注"}}</button>
 				</view>
 			</view>
 
 			<!-- 文字内容 -->
 			<view class='character  padding-sm bg-white'>
-				<text>{{content}}</text>
+				<text>{{article.content}}</text>
 			</view>
 			<!-- end -->
 
@@ -146,39 +147,40 @@
 
 			<!-- 评论标题 -->
 			<view class='comment  padding-sm bg-white'>
-				<text>全部评论 * {{commentSize}}</text>
+				<text>全部评论 * {{article.commentEntitySize}}</text>
 			</view>
 			<!-- end -->
 
 
 			<!-- 评论内容 -->
-			<view class='padding shadow-warp  bg-white comment-content' v-for="(item,index) in 2" :key="index">
+			<view class='padding shadow-warp  bg-white comment-content' v-for="(item,index) in article.commentEntity"
+				:key="index">
 				<view class='comment-content-1'>
 					<view class='comment-content-1_image'>
-						<image src='https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg'></image>
+						<image :src="item.userVo.userProtrait"></image>
 					</view>
 					<view class='comment-content-1_2'>
-						<text class='text-black'>Amibition</text>
+						<text class='text-black'>{{item.userVo.userNikename}}</text>
 					</view>
 					<view>
-						<text class='cuIcon-appreciate lg text-gray'></text> 1
+						<text class='cuIcon-appreciate lg text-gray'></text> {{item.praises?item.praises:""}}
 					</view>
 				</view>
 
 				<view class='comment-content-2'>
 					<view class='comment-content-2_1'>
-						<text class='text-black text-df text-weight'>阿斯顿发顺丰撒</text>
+						<text class='text-black text-df text-weight'>{{item.content}}</text>
 					</view>
 					<view class='comment-content-2_2 margin-top-sm'>
-						<text class='text-sm'>1分钟前</text>
+						<text class='text-sm'>{{ timestampFormat(item.createTime) }}</text>
 					</view>
 
 					<view class='leave'>
-						<view class='leave-item' v-for="(item,index) in 2" :key="item">
-							<text>黑色天空中的月亮：1231231231212312312312123123123121231231231212312312312</text>
+						<view class='leave-item' v-for="(item,index) in item.comComEntityList.slice(-3)" :key="index">
+							<text>{{item.userVo.userNikename}} : {{item.comContext}}</text>
 						</view>
 						<view class='margin-top-sm'>
-							<text class='text-blue'>查看186条回复 ></text>
+							<text class='text-blue'>查看底部{{item.comComEntityList.length}}消息 ></text>
 						</view>
 					</view>
 				</view>
@@ -201,11 +203,11 @@
 				</view>
 				<view class='msg_bottom-2'>
 					<text class='cuIcon-message text-icon  lg text-black'></text>
-					<text class='text-char'> 166</text>
+					<text class='text-char'>{{article.commentEntitySize}} </text>
 				</view>
 				<view class='msg_bottom-3'>
 					<text class='cuIcon-appreciate text-icon lg text-black'></text>
-					<text class='text-char'> 1688</text>
+					<text class='text-char'> {{article.praises}}</text>
 				</view>
 			</view>
 
@@ -222,49 +224,66 @@
 	export default {
 		data() {
 			return {
-				content:"是两个酒店设计公司肯德基嘎萨达",
-				avatar:"https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1950846641,3729028697&fm=26&gp=0.jpg",
-				userNikename:"zenofung",
-				createTime:"",
-				commentSize:17,
-				attentionStatus:false,
+				article: {
+					userVo: {},
+					attentionStatus: '',
+					commentEntitySize: ''
+				
+				},
+				commentSize: 17,
 				//图片
-				imgArr: [
-					"https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg",
-					"https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg",
-					"https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg",
-
-				],
+				imgArr: [],
 				// end
 				// 评论内容
-				discuss: [{
-						id: 1,
-						image: "https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg",
-						name: "Amibition",
-						cook: "1008",
-						hotImg: "../../../static/img/hot_evaluate1.png",
-						center: " gadsgdfgsdf",
-						time: "1分钟前"
-					},
-					{
-						id: 2,
-						image: "https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg",
-						name: "Amibition",
-						cook: "1008",
-						hotImg: "../../../static/img/hot_evaluate1.png",
-						center: " 阿斯顿发顺丰撒阿斯顿发顺丰撒阿斯顿发顺丰撒阿斯顿发顺丰撒阿斯顿发顺丰撒",
-						time: "1分钟前"
-					}
-				]
+				// discuss: [{
+				// 		id: 1,
+				// 		image: "https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg",
+				// 		name: "Amibition",
+				// 		cook: "1008",
+				// 		hotImg: "../../../static/img/hot_evaluate1.png",
+				// 		center: " gadsgdfgsdf",
+				// 		time: "1分钟前"
+				// 	},
+				// 	{
+				// 		id: 2,
+				// 		image: "https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg",
+				// 		name: "Amibition",
+				// 		cook: "1008",
+				// 		hotImg: "../../../static/img/hot_evaluate1.png",
+				// 		center: " 阿斯顿发顺丰撒阿斯顿发顺丰撒阿斯顿发顺丰撒阿斯顿发顺丰撒阿斯顿发顺丰撒",
+				// 		time: "1分钟前"
+				// 	}
+				// ]
 			}
 		},
 		methods: {
+			onLoad: function(e) {
+				if (e != null) {
+					this.$myRequest({
+						url: '/article/info/' + e.data + '/' + this.$user.id,
+						methed: 'get'
+					}).then(res => {
+						this.$data.article = res.data.article
+						this.$data.imgArr = res.data.article.images.split(",")
+						this.$data.article.commentEntitySize = res.data.article.commentEntity.length
+						console.log(this.$data.article.commentEntity)
+
+						// this.$set(this.$data.list,"list",res.data.page.list)
+
+					})
+
+				}
+
+
+
+			},
+
 			// 点击图片打开详细
 			previewImg: function(e) {
 				// console.log(e.currentTarget.dataset.index);
 				var index = e.currentTarget.dataset.index;
 				var imgArr = this.$data.imgArr;
-				
+
 				uni.previewImage({
 					current: imgArr[index], //当前图片地址
 					urls: imgArr, //所有要预览的图片的地址集合 数组形式
@@ -273,12 +292,79 @@
 					complete: function(res) {},
 				})
 			},
+			timestampFormat(timestamp) {
+				if (!timestamp) return '';
+				var timestamp = new Date(timestamp).getTime() / 1000
+
+				function zeroize(num) {
+					return (String(num).length == 1 ? '0' : '') + num;
+				}
+
+				var curTimestamp = parseInt(new Date().getTime() / 1000); //当前时间戳
+				var timestampDiff = curTimestamp - timestamp; // 参数时间戳与当前时间戳相差秒数
+
+				var curDate = new Date(curTimestamp * 1000); // 当前时间日期对象
+				var tmDate = new Date(timestamp * 1000); // 参数时间戳转换成的日期对象
+
+				var Y = tmDate.getFullYear(),
+					m = tmDate.getMonth() + 1,
+					d = tmDate.getDate();
+				var H = tmDate.getHours(),
+					i = tmDate.getMinutes(),
+					s = tmDate.getSeconds();
+
+				if (timestampDiff < 60) { // 一分钟以内
+					return "刚刚";
+				} else if (timestampDiff < 3600) { // 一小时前之内
+					return Math.floor(timestampDiff / 60) + "分钟前";
+				} else if (curDate.getFullYear() == Y && curDate.getMonth() + 1 == m && curDate.getDate() == d) {
+					return '今天' + zeroize(H) + ':' + zeroize(i);
+				} else {
+					var newDate = new Date((curTimestamp - 86400) * 1000); // 参数中的时间戳加一天转换成的日期对象
+					if (newDate.getFullYear() == Y && newDate.getMonth() + 1 == m && newDate.getDate() == d) {
+						return '昨天' + zeroize(H) + ':' + zeroize(i);
+					} else if (curDate.getFullYear() == Y) {
+						return zeroize(m) + '月' + zeroize(d) + '日 ' + zeroize(H) + ':' + zeroize(i);
+					} else {
+						return Y + '年' + zeroize(m) + '月' + zeroize(d) + '日 ' + zeroize(H) + ':' + zeroize(i);
+					}
+				}
+			},
 			// 点击关注
-			clickFocus(){
-				 console.log(this.attentionStatus);
-				this.$set(this.$data, "attentionStatus",!this.attentionStatus);
-		
-	
+			clickFocus(attentionStatus, follower) {
+				if (attentionStatus) {
+					this.$myRequest({
+						url: '/attention/delete',
+						method: 'post',
+						data: {
+							"meId": this.$user.id,
+							"followerId": follower
+						}
+					}).then(res => {
+						if (res.data.code == 0) {
+							this.$set(this.article, "attentionStatus", !attentionStatus);
+						}
+
+					})
+					console.log("取消关注");
+				}
+				if (!attentionStatus) {
+					this.$myRequest({
+						url: '/attention/save',
+						method: 'post',
+						data: {
+							"meId": this.$user.id,
+							"followerId": follower
+						}
+					}).then(res => {
+						if (res.data.code == 0) {
+							this.$set(this.article, "attentionStatus", !attentionStatus);
+						}
+
+					})
+				}
+
+
 			},
 
 			// 跳转回复留言详细

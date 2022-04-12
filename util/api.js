@@ -8,7 +8,7 @@ export const myRequest = (options)=>{
             method: options.method || 'GET', // 方法从options中获取，如果没有传入method，则默认为GET，
             data: options.data || {},  // data从options中获取，如果没有传入data， 则默认一个空对象
             success: (res) => {  // 用箭头函数，res是返回来的数据
-                if(res.data.status !== 0){  // 如果请求失败，则给一个提示
+                if(res.data.code !== 0){  // 如果请求失败，则给一个提示
                     return uni.showToast({
                         title: '获取数据失败！'
                     })

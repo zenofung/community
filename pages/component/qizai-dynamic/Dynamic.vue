@@ -14,7 +14,7 @@
 				</view>
 				<view class="user__content-extra"  @click.stop="clickFocus()">
 					<slot>  
-						<text :class="isFocusOn?'user__focus-on':'user__focus-off'" >{{isFocusOn?'关注':'已关注' }}</text>
+						<text :class="isFocusOn?'user__focus-on':'user__focus-off'" >{{isFocusOn?'已关注':'关注' }}</text>
 					</slot>
 				</view>
 			</view>
@@ -33,15 +33,16 @@
 			<uni-grid :column="4" :showBorder="false"  :square="false" >
 			    <uni-grid-item>
 			        <span style="color:gray" @click.stop="clickThumbsup()">
-						<uni-icons type="hand-up" size="18"style="margin-right: 2px;"  v-if="isLike" ></uni-icons>
-						<uni-icons type="hand-up-filled" size="18" style=" color: #FF0000 ; margin-right: 2px;"  v-if="!isLike"></uni-icons>
+	
+						<uni-icons type="hand-up" size="18"style="margin-right: 2px;"  v-if="!isLike" ></uni-icons>
+						<uni-icons type="hand-up-filled" size="18" style=" color: #FF0000 ; margin-right: 2px;"  v-if="isLike"></uni-icons>
 					    {{likeNumber?likeNumber:''}}
 					</span>
 			    </uni-grid-item>
 			    <uni-grid-item>
 					<span  style="color:gray"   @click.stop="clickChat()">
 						<uni-icons type="chat" size="18" style="margin-right: 2px;color:gray"></uni-icons>
-						{{chatNumber?chatNumber:''}}
+						{{chatNumber.length?chatNumber.length:''}}
 					</span>
 			    </uni-grid-item>
 				<uni-grid-item>
@@ -73,7 +74,7 @@
 				type: String
 			},
 			publishTime: {
-				type: Number
+				type: String
 			},
 			isFocusOn: {
 				type: Boolean
@@ -97,7 +98,7 @@
 				type: Number
 			},
 			chatNumber: {
-				type: Number
+				type: Array
 			},
 			userNoShow: {
 				type: Boolean
@@ -162,6 +163,9 @@
 				}
 			},
 			timestampFormat( timestamp ) {
+				
+				var timestamp = new Date(timestamp).getTime()/1000
+				console.log(timestamp)
 				if(!timestamp) return '';
 			    function zeroize( num ) {
 			        return (String(num).length == 1 ? '0' : '') + num;
