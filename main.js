@@ -3,6 +3,7 @@ import App from './App'
 import { myRequest } from './util/api.js'
 import { user } from './util/user.js'
 
+
 Vue.config.productionTip = false
 
 App.mpType = 'app'

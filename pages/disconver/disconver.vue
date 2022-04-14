@@ -71,43 +71,7 @@
 					},
 				],
 				list: [],
-				// list:[
-				//         {
-				//             id:1,
-				//             avatar:'https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1950846641,3729028697&fm=26&gp=0.jpg',
-				//             name:'小新',
-				//             publishTime:1617086756,
-				//             content:'中国外交官这样讽加拿大总理，算不算骂？该不该骂？',
-				// imgList:[
-				//     'https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1976832114,2993359804&fm=26&gp=0.jpg',
-				//     'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2369680151,826506100&fm=26&gp=0.jpg',
-				// ],
-				//             isLike:true,
-				//             isGiveReward:true,
-				//             likeNumber:2,
-				//             giveRewardNumber:2,
-				//             chatNumber:2,
-				//             isFocusOn:true,
-				//         },
-
-				//         {
-				//             id:2,
-				//             avatar:'https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2291332875,175289127&fm=26&gp=0.jpg',
-				//             name:'小白',
-				//             publishTime:1617036656,
-				//             content:'  足不出户享国内核医学领域顶级专家云诊断，“中山-联影”分子影像远程互联融合创新中心揭牌 ',
-				//             imgList:[
-				//                 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2369680151,826506100&fm=26&gp=0.jpg',
-				//             ],
-				//             isLike:false,
-				//             isGiveReward:false,
-				//             likeNumber:0,
-				//             giveRewardNumber:0,
-				//             chatNumber:2,
-				//             isFocusOn:false,
-				//         }
-				// ]
-				//end
+				
 			}
 		},
 		components: {
@@ -148,15 +112,31 @@
 		},
 		//上拉刷新
 		onPullDownRefresh: function() {
+			this.$myRequest({
+				url: '/article/list',
+				methed: 'get',
+				data: {
+					limit: 5,
+					page: 1,
+					user_id: '1505839386443997186'
+				}
+			}).then(res => {
+			
+				this.$data.list = res.data.page.list
+				console.log(this.$data.list)
+				// this.$set(this.$data.list,"list",res.data.page.list)
+			
+			})
+			
 			//模拟加载完成
 			setTimeout(function() {
 				uni.stopPullDownRefresh();
 			}, 2000);
+			
 		},
 		//上拉刷新
 		onReachBottom: function() {
-			console.log("出发上拉刷新事件");
-
+		
 		},
 		methods: {
 			clickDynamic(e) {

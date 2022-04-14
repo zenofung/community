@@ -90,16 +90,7 @@
 		
 		
 		</view>
-		
-		<view class='slect_model' >
-		<!-- #ifndef APP-PLUS -->
-		<view class="modle-select " :class="item.checked == true ? 'select_state' : '' "  v-for=" (item,index) in re_price" :key=" 'idA'+ index" @tap='select_price' :data-price='item.price' :data-id='index'>
-		<!-- #endif -->
-		
-		<!-- #ifdef MP -->
-		<view class="modle-select " :class="item.checked == true ? 'select_state' : '' "  v-for=" (item,index) in re_price" :key="index" @tap='select_price' :data-price='item.price' :data-id='index'>
-		<!-- #endif -->
-			
+
 		<view class='modle-select-1'><text class='text-price text-red'>{{item.price}}</text></view>
 		<view class='modle-select-2'><text>{{item.desc}}</text></view>
 		</view>

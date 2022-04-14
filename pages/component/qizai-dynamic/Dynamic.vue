@@ -24,8 +24,8 @@
 		<view class="text">{{content}}</view>
 		<view class="allImage">
 			<view class="imgList">
-				<view class="images" v-for="(item,index) in imgList" :key="index">
-					<image @click.stop="previewImg()" class="oneimg" :src="item" mode="aspectFill" :style="{width:imgWidth+'px','max-height':imgHeight+'px'}"></image>
+				<view class="images" @tap="previewImg" :data-index="index" v-for="(item,index) in imgList" :key="index">
+					<image class="oneimg" :src="item" mode="aspectFill" :style="{width:imgWidth+'px','max-height':imgHeight+'px'}"></image>
 				</view>
 			</view>
 		</view>
@@ -136,13 +136,14 @@
 		},
 		methods: {
 			// 预览图片
-			previewImg() {
+			previewImg(e) {
+			    var index = e.currentTarget.dataset.index;
 				uni.previewImage({
-					urls: this.imgList,
-					longPressActions: {
-						itemList: ['保存图片'],
-
-					}
+					current: this.imgList[index], //当前图片地址
+					urls: this.imgList, //所有要预览的图片的地址集合 数组形式
+					success: function(res) {},
+					fail: function(res) {},
+					complete: function(res) {},
 				})
 			},
 			initOperate(){

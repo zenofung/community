@@ -163,7 +163,14 @@
 						<text class='text-black'>{{item.userVo.userNikename}}</text>
 					</view>
 					<view>
-						<text class='cuIcon-appreciate lg text-gray'></text> {{item.praises?item.praises:""}}
+						<span @click.stop="clickThumbsup(item.id,index)">
+
+							<uni-icons type="hand-up" size="18" style="margin-right: 2px;" v-if="!item.praiseStatus">
+							</uni-icons>
+							<uni-icons type="hand-up-filled" size="18" style=" color: #FF0000 ; margin-right: 2px;"
+								v-if="item.praiseStatus"></uni-icons>
+							{{item.praises?item.praises:""}}
+						</span>
 					</view>
 				</view>
 
@@ -176,10 +183,10 @@
 					</view>
 
 					<view class='leave'>
-						<view class='leave-item' v-for="(item,index) in item.comComEntityList.slice(-3)" :key="index">
-							<text>{{item.userVo.userNikename}} : {{item.comContext}}</text>
+						<view class='leave-item' v-for="(item2,index) in item.comComEntityList.slice(-3)" :key="index">
+							<text>{{item2.userVo.userNikename}} : {{item2.comContext}}</text>
 						</view>
-						<view class='margin-top-sm'>
+						<view class='margin-top-sm' @tap='toDiscover_desc(item.id)'>
 							<text class='text-blue'>查看底部{{item.comComEntityList.length}}消息 ></text>
 						</view>
 					</view>
@@ -219,16 +226,19 @@
 
 	</view>
 </template>
-
 <script>
+	import {
+		articleUtil
+	} from "../../../util/articleUtil.js";
+
 	export default {
 		data() {
 			return {
 				article: {
 					userVo: {},
 					attentionStatus: '',
-					commentEntitySize: ''
-				
+					commentEntitySize: {}
+
 				},
 				commentSize: 17,
 				//图片
@@ -258,6 +268,8 @@
 		},
 		methods: {
 			onLoad: function(e) {
+				
+				
 				if (e != null) {
 					this.$myRequest({
 						url: '/article/info/' + e.data + '/' + this.$user.id,
@@ -277,6 +289,56 @@
 
 
 			},
+			timestampFormat(e) {
+
+				return articleUtil.timestampFormat(e);
+			},
+
+			clickThumbsup(e, index) {
+				console.log(e);
+				console.log(index);
+
+				this.$set(this.$data.article.commentEntity[index], "praiseStatus", !this.$data.article.commentEntity[index]
+					.praiseStatus);
+				if (this.$data.article.commentEntity[index].praiseStatus) {
+					this.$myRequest({
+						url: '/commentpraise/save',
+						method: 'post',
+						data: {
+							"userId": this.$user.id,
+							"commentId": e
+						}
+					}).then(res => {
+						if (res.data.code == 0) {
+							this.$set(this.$data.article.commentEntity[index], "praises", this.$data.article
+								.commentEntity[index].praises + 1);
+
+						}
+
+					})
+
+				}
+				if (!this.$data.article.commentEntity[index].praiseStatus) {
+					this.$myRequest({
+						url: '/commentpraise/delete',
+						method: 'post',
+						data: {
+							"userId": this.$user.id,
+							"commentId": e
+						}
+					}).then(res => {
+						if (res.data.code == 0) {
+							this.$set(this.$data.article.commentEntity[index], "praises", this.$data.article
+								.commentEntity[index].praises - 1);
+						}
+
+					})
+
+				}
+
+				console.log(this.$data.article.commentEntity[index].praiseStatus);
+				console.log('childThumbsup');
+			},
 
 			// 点击图片打开详细
 			previewImg: function(e) {
@@ -292,44 +354,7 @@
 					complete: function(res) {},
 				})
 			},
-			timestampFormat(timestamp) {
-				if (!timestamp) return '';
-				var timestamp = new Date(timestamp).getTime() / 1000
 
-				function zeroize(num) {
-					return (String(num).length == 1 ? '0' : '') + num;
-				}
-
-				var curTimestamp = parseInt(new Date().getTime() / 1000); //当前时间戳
-				var timestampDiff = curTimestamp - timestamp; // 参数时间戳与当前时间戳相差秒数
-
-				var curDate = new Date(curTimestamp * 1000); // 当前时间日期对象
-				var tmDate = new Date(timestamp * 1000); // 参数时间戳转换成的日期对象
-
-				var Y = tmDate.getFullYear(),
-					m = tmDate.getMonth() + 1,
-					d = tmDate.getDate();
-				var H = tmDate.getHours(),
-					i = tmDate.getMinutes(),
-					s = tmDate.getSeconds();
-
-				if (timestampDiff < 60) { // 一分钟以内
-					return "刚刚";
-				} else if (timestampDiff < 3600) { // 一小时前之内
-					return Math.floor(timestampDiff / 60) + "分钟前";
-				} else if (curDate.getFullYear() == Y && curDate.getMonth() + 1 == m && curDate.getDate() == d) {
-					return '今天' + zeroize(H) + ':' + zeroize(i);
-				} else {
-					var newDate = new Date((curTimestamp - 86400) * 1000); // 参数中的时间戳加一天转换成的日期对象
-					if (newDate.getFullYear() == Y && newDate.getMonth() + 1 == m && newDate.getDate() == d) {
-						return '昨天' + zeroize(H) + ':' + zeroize(i);
-					} else if (curDate.getFullYear() == Y) {
-						return zeroize(m) + '月' + zeroize(d) + '日 ' + zeroize(H) + ':' + zeroize(i);
-					} else {
-						return Y + '年' + zeroize(m) + '月' + zeroize(d) + '日 ' + zeroize(H) + ':' + zeroize(i);
-					}
-				}
-			},
 			// 点击关注
 			clickFocus(attentionStatus, follower) {
 				if (attentionStatus) {
@@ -368,9 +393,9 @@
 			},
 
 			// 跳转回复留言详细
-			toDiscover_desc: function() {
+			toDiscover_desc: function(e) {
 				uni.navigateTo({
-					url: "/pages/disconver/discover_desc_more/discover_desc_more"
+					url: "/pages/disconver/discover_desc_more/discover_desc_more?data=" + e
 				})
 			}
 
