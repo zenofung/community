@@ -16,5 +16,5 @@
 	@import "colorui/main.css";
 	@import "colorui/icon.css";
 	@import "colorui/animation.css";
-	
+	@import "/wxcomponents/vant/common/index.wxss";
 </style>

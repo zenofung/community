@@ -1,0 +1,168 @@
+
+.pa.data-v-1be8b445{
+	  padding: 20rpx;
+}
+	
+/* 内容 */
+.contianer.data-v-1be8b445{
+  width: 100%;
+  height: 400rpx;
+  margin-bottom: 20rpx;
+}
+.contianer-title.data-v-1be8b445{
+  display: flex;
+}
+.contianer-title_2.data-v-1be8b445{
+margin-right: 20rpx;
+}
+.contianer-title_2 text.data-v-1be8b445{
+  font-size: 25rpx;
+  color: gray;
+}
+.contianer-title_1.data-v-1be8b445{
+  font-size: 32rpx;
+  color: black;
+  width: 75%;
+  margin-left: 20rpx;
+}
+.item-inline-1_1.data-v-1be8b445{
+  width: 300rpx;
+}
+.item-inlines.data-v-1be8b445{
+  display: inline-block;
+}
+.item-inline.data-v-1be8b445{
+display: inline-block;
+margin-right: 10rpx;
+height: 150rpx;
+width: 230rpx;
+}
+.container-price_desc.data-v-1be8b445{
+  display: flex;
+  margin-top: 20rpx;
+  align-items: center;
+}
+.view-width.data-v-1be8b445{
+  width: 70%;
+}
+.margin-left.data-v-1be8b445{
+  margin-left: 20rpx;
+}
+.container-compile.data-v-1be8b445{
+  display: flex;
+  margin-top: 20rpx;
+  justify-content: flex-end;
+}
+	
+/* .container-line{
+  margin-top: 20rpx;
+  width: 93%;
+  height: 3rpx;
+  background-color: gainsboro;
+  margin-left: 20rpx
+} */
+	
+/* end */
+	
+/* <!-- 自定义弹窗 --> */
+.showModel.data-v-1be8b445{
+position: fixed;
+top: 0;
+left: 0;
+bottom: 0;
+right: 0;
+background: rgba(0, 0, 0, 0.3);
+z-index: 10;
+/* display: none; */
+}
+.model.data-v-1be8b445{
+  padding: 30rpx;
+  position: fixed;
+  top: 500rpx;
+  margin-left: 7%;
+  border-radius: 20rpx;
+  height: 650rpx;
+  width: 650rpx;
+  background: white;
+}
+.model-close.data-v-1be8b445{
+  margin-top: 20rpx;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 30rpx;
+}
+.model-title_desc.data-v-1be8b445{
+  display: flex;
+  align-items: center;
+}
+.model-title_desc-1 image.data-v-1be8b445{
+  height: 130rpx;
+  width: 130rpx;
+}
+.model-title_desc-2.data-v-1be8b445{
+  margin-left: 30rpx;
+}
+.model-title_desc-2_1.data-v-1be8b445{
+  margin-bottom: 40rpx;
+   color: black;
+   display: flex;
+   align-items: center;
+}
+.model-title_desc-2_2.data-v-1be8b445{
+  color: black;
+}
+.model-title_desc-2_1_text.data-v-1be8b445{
+  width: 100rpx;
+}
+.model-title_desc-2_2.data-v-1be8b445{
+  display: flex;
+  align-items: center;
+}
+.model-title_desc-2_2_text.data-v-1be8b445{
+  color: black;
+  padding: 20rpx;
+  background: gainsboro;
+  border-radius: 10rpx;
+}
+.model-title_desc-2_2_1_text.data-v-1be8b445{
+  width: 100rpx;
+}
+.modle-select.data-v-1be8b445{
+  margin-top: 20rpx;
+  height: 130rpx;
+  width: 43%;
+  background: gainsboro;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10rpx;
+  margin: 20rpx;
+}
+.modle-select-1 text.data-v-1be8b445{
+  font-size: 32rpx;
+  font-weight: 600;
+}
+.modle-select-2 text.data-v-1be8b445{
+  font-size: 20rpx;
+}
+.modle-select-1.data-v-1be8b445{
+  margin-bottom: 20rpx;
+}
+.slect_model.data-v-1be8b445{
+  display: flex;
+  flex-wrap: wrap;
+}
+.button-confirm.data-v-1be8b445{
+  width: 98%;
+}
+	
+/* end */
+	
+/* 选择样式 */
+.select_state.data-v-1be8b445{
+  background: #fef2ce;
+}
+	
+/* end */
+

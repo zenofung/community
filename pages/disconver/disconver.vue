@@ -1,6 +1,29 @@
 <template>
+
+
 	<!-- <bar></bar> -->
+
 	<view class="">
+		
+		<!-- 搜索 -->
+		<view class="cu-bar search bg-white" id="TabCurTab">
+			<view class="action text-cut locaWidth" @click="handleSelect()" >
+				<view v-if="formData.signAddress"
+				  class="location">
+				  {{ formData.signAddress }}
+				</view>
+				<view v-if="location.error"
+				  class="error">
+				  {{ location.errorInfo }}
+				</view>
+			</view>
+			<view class="search-form round" >
+				<text class="cuIcon-search"></text>
+				<input type="text" placeholder="搜索图片、文章、视频" confirm-type="search"></input>
+			</view>
+			<!-- <view class="cu-avatar round search_img" :style="item.userVo.userProtrait"></view> -->
+		</view>
+		<!-- 搜索end -->
 
 		<!-- 导航条 -->
 		<TopBar @click="tabSelect" :TabCur="TabCur" :dataList="tablist"></TopBar>
@@ -18,7 +41,6 @@
 			@clickGiveReward="clickGiveReward(item.id)" @clickChat="clickChat(item.id)">
 		</Dynamic>
 
-
 	</view>
 
 
@@ -30,6 +52,13 @@
 	import TopBar from "../component/topTab.vue";
 	import minSwiper from "../component/minSwiper.vue";
 	import Dynamic from '../component/qizai-dynamic/Dynamic.vue';
+	import { mapGetters, mapMutations } from 'vuex'
+	import {
+		formatDate,
+		reverseGeocoder,
+		getLocation
+	} from '@/util/index.js'
+
 	export default {
 		data() {
 			return {
@@ -38,6 +67,7 @@
 					'http://bpic.588ku.com/element_origin_min_pic/16/10/30/528aa13209e86d5d9839890967a6b9c1.jpg',
 				],
 				// end 
+				addr: "授权位置",
 
 				// 导航条
 				TabCur: '0',
@@ -47,33 +77,42 @@
 				//导航条
 				tablist: [{
 						id: 1,
-						name: '导航条888'
+						name: '你的小区'
 					},
 					{
 						id: 2,
-						name: '导航条2'
+						name: '关注'
 					},
 					{
 						id: 3,
-						name: '导航条3'
+						name: '附近'
 					},
 					{
 						id: 4,
-						name: '导航条4'
+						name: '城市'
 					},
 					{
 						id: 5,
-						name: '导航条5'
+						name: '热门'
 					},
-					{
-						id: 6,
-						name: '导航条6'
-					},
+
 				],
 				list: [],
-				
+				formData: {
+					signAddress: '', // 签到地址
+					longitude: '', // 经度
+					latitude: '' // 维度
+				},
+				location: {
+					loading: true,
+					error: false,
+					errorInfo: '定位失败',
+					curLocation: null // 当前位置信息
+				}
+
 			}
 		},
+
 		components: {
 			bar,
 			TopBar,
@@ -81,15 +120,9 @@
 			Dynamic
 		},
 		onLoad: function() {
-
-
+			this.getLocation()
 		},
 		onShow: function() {
-
-			// async request(){
-
-			//     console.log(data);
-			// }
 
 			this.$myRequest({
 				url: '/article/list',
@@ -121,24 +154,91 @@
 					user_id: '1505839386443997186'
 				}
 			}).then(res => {
-			
+
 				this.$data.list = res.data.page.list
 				console.log(this.$data.list)
 				// this.$set(this.$data.list,"list",res.data.page.list)
-			
+
 			})
-			
+
 			//模拟加载完成
 			setTimeout(function() {
 				uni.stopPullDownRefresh();
 			}, 2000);
-			
+
 		},
 		//上拉刷新
 		onReachBottom: function() {
-		
+
 		},
-		methods: {
+		watch: {
+		  selectedLocation (newData) {
+			console.log("newData"+newData)
+		    if (newData) {
+		      const { title, location } = newData
+		      this.formData.signAddress = title
+		      this.formData.longitude = location.lng
+		      this.formData.latitude = location.lat
+		      this.location.curLocation = newData
+		    }
+		  }
+		},
+		methods: { 
+
+			// // 位置微调
+			handleSelect() {
+				if (this.location.curLocation) {
+					const {
+						lng,
+						lat
+					} = this.location.curLocation.location
+					if (this.selectedSearch && (this.selectedSearch.location.lng !== lng || this.selectedSearch.location
+							.lat !== lat)) {
+						this.SET_SELECTED_SEARCH(null)
+					}
+					uni.navigateTo({
+						url: `/pages/select/select?longitude=${lng}&latitude=${lat}`
+					})
+				} else {
+					this.getLocation()
+				}
+			},
+			// 获取位置信息
+			getLocationInfo (location) {
+			  reverseGeocoder(location)
+			    .then(res => {
+			      console.log('当前位置信息：', res)
+			      const address = res.result.pois[0].title
+							this.formData.signAddress = address
+							this.location.curLocation = res.result
+			      this.location.error = false
+			      this.location.loading = false
+			    })
+			    .catch(err => {
+			      this.location.loading = false
+			      this.location.error = true
+			    })
+			},
+			// 获取当前定位
+			getLocation() {
+				this.location.loading = true
+				this.location.error = false
+				getLocation()
+					.then(res => {
+						const {
+							longitude,
+							latitude
+						} = res
+						this.getLocationInfo({
+							longitude,
+							latitude
+						})
+					})
+					.catch(() => {
+						this.location.loading = false
+						this.location.error = true
+					})
+			},
 			clickDynamic(e) {
 				console.log('childDynamic');
 			},
@@ -148,7 +248,7 @@
 				console.log('childUser');
 			},
 			// 点击关注
-			clickFocus(e,follower) {
+			clickFocus(e, follower) {
 				if (this.list[e].attentionStatus) {
 					this.$myRequest({
 						url: '/attention/delete',
@@ -181,7 +281,7 @@
 					})
 				}
 
-			
+
 			},
 			// 点赞
 			clickThumbsup(e, index) {

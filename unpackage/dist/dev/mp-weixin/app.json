@@ -4,12 +4,8 @@
     "pages/issue/issue",
     "pages/msg/msg",
     "pages/my/my",
-    "pages/home/home_grid/home_grid",
-    "pages/home/home_classify/home_classify",
-    "pages/home/home_detail/home_detail",
-    "pages/home/home_grid_detail/home_grid_detail",
-    "pages/home/confirm_order/confirm_order",
-    "pages/home/order_detail/order_detail",
+    "pages/select/select",
+    "pages/search/search",
     "pages/disconver/discover_desc/discover_desc",
     "pages/disconver/discover_desc_more/discover_desc_more",
     "pages/msg/msg_chat/msg_chat",
@@ -25,7 +21,7 @@
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
+    "navigationBarTitleText": "自由社区",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
@@ -57,5 +53,19 @@
       }
     ]
   },
-  "usingComponents": {}
+  "permission": {
+    "scope.userLocation": {
+      "desc": "授权位置显示最近小区动态,拒接授权将无法显示当前小区,建议授权。我们承诺不会泄露您的隐私！！！"
+    }
+  },
+  "usingComponents": {
+    "van-button": "/wxcomponents/vant/button/index",
+    "van-cell": "/wxcomponents/vant/cell/index",
+    "van-cell-group": "/wxcomponents/vant/cell-group/index",
+    "van-search": "/wxcomponents/vant/search/index",
+    "van-icon": "/wxcomponents/vant/icon/index",
+    "van-field": "/wxcomponents/vant/field/index",
+    "van-loading": "/wxcomponents/vant/loading/index",
+    "van-info": "/wxcomponents/vant/info/index"
+  }
 }

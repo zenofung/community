@@ -6,6 +6,7 @@
 		// 		"enablePullDownRefresh":true
 		// 	}
 		// },
+		
         {
             "path" : "pages/disconver/disconver",
             "style" : {
@@ -24,35 +25,47 @@
             "path" : "pages/my/my",
             "style" : {}
         },
+		{
+			"path": "pages/select/select",
+			"style": {
+				
+			}
+		},
+		{
+			"path": "pages/search/search",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
+		},
 		
       
+		// {
+		// 	"path":"pages/home/home_grid/home_grid",
+		// 	"style":{
+		// 		"navigationBarTitleText":"详细"
+		// 	}
+		// },
+        // {
+        //     "path" : "pages/home/home_classify/home_classify",
+        //     "style" : {}
+        // }
+        // ,{
+        //     "path" : "pages/home/home_detail/home_detail",
+        //     "style" : {}
+        // }
+        // ,{
+        //     "path" : "pages/home/home_grid_detail/home_grid_detail",
+        //     "style" : {}
+        // }
+        // ,{
+        //     "path" : "pages/home/confirm_order/confirm_order",
+        //     "style" : {}
+        // }
+        // ,{
+        //     "path" : "pages/home/order_detail/order_detail",
+        //     "style" : {}
+        // },
 		{
-			"path":"pages/home/home_grid/home_grid",
-			"style":{
-				"navigationBarTitleText":"详细"
-			}
-		}
-        ,{
-            "path" : "pages/home/home_classify/home_classify",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/home/home_detail/home_detail",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/home/home_grid_detail/home_grid_detail",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/home/confirm_order/confirm_order",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/home/order_detail/order_detail",
-            "style" : {}
-        }
-        ,{
             "path" : "pages/disconver/discover_desc/discover_desc",
             "style" : {}
         }
@@ -99,9 +112,19 @@
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "自由社区",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"usingComponents":{
+			"van-button": "/wxcomponents/vant/button/index",
+			"van-cell": "/wxcomponents/vant/cell/index",
+			"van-cell-group": "/wxcomponents/vant/cell-group/index",
+			"van-search": "/wxcomponents/vant/search/index",
+			"van-icon": "/wxcomponents/vant/icon/index",
+			"van-field": "/wxcomponents/vant/field/index",
+			"van-loading": "/wxcomponents/vant/loading/index",
+			"van-info": "/wxcomponents/vant/info/index"
+		}
 	},
 	"tabBar":{
 		"list":[

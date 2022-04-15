@@ -1,0 +1,9 @@
+{
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "bar": "/pages/component/bar",
+    "top-bar": "/pages/component/topTab",
+    "min-swiper": "/pages/component/minSwiper",
+    "dynamic": "/pages/component/qizai-dynamic/Dynamic"
+  }
+}

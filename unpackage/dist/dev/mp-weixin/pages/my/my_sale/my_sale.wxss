@@ -1,0 +1,114 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* pages/my/my_sale/my_sale.wxss */
+.pa.data-v-16688c8a{
+  padding: 20rpx;
+}
+
+/* 内容 */
+.container.data-v-16688c8a{
+  padding: 20rpx;
+  height: 300rpx;
+  width: 100%;
+  margin-bottom: 20rpx;
+}
+.container-top-2.data-v-16688c8a {
+  margin-left: 20rpx;
+  width: 120%;
+}
+.container-top-1 image.data-v-16688c8a{
+  width: 150rpx;
+  height: 150rpx;
+}
+.container-top.data-v-16688c8a{
+  display: flex;
+  align-items: center;
+}
+.container-top-2_1.data-v-16688c8a{
+  margin-bottom: 20rpx;
+  width: 50%;
+}
+.container-top-2_1 text.data-v-16688c8a{
+  font-weight: 600;
+}
+.container-top-2_2.data-v-16688c8a{
+  margin-bottom: 20rpx;
+}
+.container-top-2_2 text.data-v-16688c8a{
+  font-size: 25rpx;
+  font-weight: 750;
+}
+.text-xxm.data-v-16688c8a{
+  font-size: 22rpx;
+  color: gray;
+  padding-left: 10rpx;
+}
+.container-line.data-v-16688c8a{
+  width: 95%;
+  height: 3rpx;
+  background: gainsboro;
+  margin-top: 25rpx;
+}
+.container-under.data-v-16688c8a{
+  display: flex;
+  margin-top: 25rpx;
+  align-items: center;
+}
+.font-size-lg.data-v-16688c8a{
+  font-size: 35rpx;
+  padding-right: 10rpx;
+}
+.container-under-1.data-v-16688c8a{
+width: 65%;
+}
+.container-under-2.data-v-16688c8a{
+  margin-right: 20rpx;
+}
+
+/* end */
+
