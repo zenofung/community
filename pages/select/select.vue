@@ -71,7 +71,6 @@ export default {
     ...mapGetters(['selectedLocation', 'selectedSearch'])
   },
   onLoad ({ longitude, latitude }) {
-	console.log("aaaa"+longitude)
     this.mapContext = uni.createMapContext('map')
     this.longitude = longitude
     this.latitude = latitude
@@ -127,14 +126,12 @@ export default {
       const index = this.list.findIndex(item => item.id === this.active)
       if (index > -1) {
         this.SET_SELECTED_LOCATION(this.list[index])
-		console.log(this.list[index])
         uni.navigateBack()
       }
     }
   },
   watch: {
     selectedSearch (newData) {
-	  console.log("bb"+newData)
       if (newData) {
         const { lng, lat } = newData.location
         this.mapContext.moveToLocation({

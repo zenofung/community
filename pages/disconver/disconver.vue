@@ -4,29 +4,26 @@
 	<!-- <bar></bar> -->
 
 	<view class="">
-		
 		<!-- 搜索 -->
-		<view class="cu-bar search bg-white" id="TabCurTab">
-			<view class="action text-cut locaWidth" @click="handleSelect()" >
-				<view v-if="formData.signAddress"
-				  class="location">
-				  {{ formData.signAddress }}
+		<view class="cu-bar search bg-white"  id="TabCurTab">
+			<view class="action text-cut locaWidth" @click="handleSelect()">
+				<uni-icons type="location" size="18"></uni-icons>
+				<view v-if="formData.signAddress" class="location">
+					{{ formData.getAddress }}
 				</view>
-				<view v-if="location.error"
-				  class="error">
-				  {{ location.errorInfo }}
+				<view v-if="location.error" class="error">
+					{{ location.errorInfo }}
 				</view>
 			</view>
-			<view class="search-form round" >
+			<view class="search-form round">
 				<text class="cuIcon-search"></text>
 				<input type="text" placeholder="搜索图片、文章、视频" confirm-type="search"></input>
 			</view>
 			<!-- <view class="cu-avatar round search_img" :style="item.userVo.userProtrait"></view> -->
 		</view>
 		<!-- 搜索end -->
-
 		<!-- 导航条 -->
-		<TopBar @click="tabSelect" :TabCur="TabCur" :dataList="tablist"></TopBar>
+		<TopBar @click="tabSelect" :TabCur="TabCur" :dataList="tablist" :address="address"></TopBar>
 		<!-- 导航条 -->
 
 		<!-- 轮播图 -->
@@ -52,7 +49,10 @@
 	import TopBar from "../component/topTab.vue";
 	import minSwiper from "../component/minSwiper.vue";
 	import Dynamic from '../component/qizai-dynamic/Dynamic.vue';
-	import { mapGetters, mapMutations } from 'vuex'
+	import {
+		mapGetters,
+		mapMutations
+	} from 'vuex'
 	import {
 		formatDate,
 		reverseGeocoder,
@@ -68,7 +68,7 @@
 				],
 				// end 
 				addr: "授权位置",
-
+				address:"未授权位置",
 				// 导航条
 				TabCur: '0',
 				scrollLeft: 0,
@@ -77,7 +77,7 @@
 				//导航条
 				tablist: [{
 						id: 1,
-						name: '你的小区'
+						name: '附近'
 					},
 					{
 						id: 2,
@@ -85,7 +85,7 @@
 					},
 					{
 						id: 3,
-						name: '附近'
+						name: '我的小区'
 					},
 					{
 						id: 4,
@@ -99,6 +99,7 @@
 				],
 				list: [],
 				formData: {
+					getAddress:"切换位置",
 					signAddress: '', // 签到地址
 					longitude: '', // 经度
 					latitude: '' // 维度
@@ -112,7 +113,9 @@
 
 			}
 		},
-
+		computed: {
+			...mapGetters(['selectedLocation', 'selectedSearch'])
+		},
 		components: {
 			bar,
 			TopBar,
@@ -121,16 +124,17 @@
 		},
 		onLoad: function() {
 			this.getLocation()
+			this.formData=this.$user.formData
+			this.location=this.$user.location
 		},
 		onShow: function() {
-
 			this.$myRequest({
 				url: '/article/list',
 				methed: 'get',
 				data: {
 					limit: 5,
 					page: 1,
-					user_id: '1505839386443997186'
+					user_id: this.$user.id
 				}
 			}).then(res => {
 
@@ -151,7 +155,7 @@
 				data: {
 					limit: 5,
 					page: 1,
-					user_id: '1505839386443997186'
+					user_id: this.$user.id
 				}
 			}).then(res => {
 
@@ -171,19 +175,7 @@
 		onReachBottom: function() {
 
 		},
-		watch: {
-		  selectedLocation (newData) {
-			console.log("newData"+newData)
-		    if (newData) {
-		      const { title, location } = newData
-		      this.formData.signAddress = title
-		      this.formData.longitude = location.lng
-		      this.formData.latitude = location.lat
-		      this.location.curLocation = newData
-		    }
-		  }
-		},
-		methods: { 
+		methods: {
 
 			// // 位置微调
 			handleSelect() {
@@ -204,20 +196,30 @@
 				}
 			},
 			// 获取位置信息
-			getLocationInfo (location) {
-			  reverseGeocoder(location)
-			    .then(res => {
-			      console.log('当前位置信息：', res)
-			      const address = res.result.pois[0].title
-							this.formData.signAddress = address
-							this.location.curLocation = res.result
-			      this.location.error = false
-			      this.location.loading = false
-			    })
-			    .catch(err => {
-			      this.location.loading = false
-			      this.location.error = true
-			    })
+			getLocationInfo(location) {
+				reverseGeocoder(location)
+					.then(res => {
+						const address = res.result.pois[0].title
+						this.$set(this,"address",address)
+						this.$user.address=address
+						
+						console.log(this.$user.address)
+						this.formData.signAddress = address
+						this.location.curLocation = res.result
+						this.location.error = false
+						this.location.loading = false
+						
+						this.$user.formData.signAddress = address
+						this.$user.location.curLocation = res.result
+						this.$user.location.error = false
+						this.$user.location.loading = false
+						
+						
+					})
+					.catch(err => {
+						this.$user.location.loading = false
+						this.$user.location.error = true
+					})
 			},
 			// 获取当前定位
 			getLocation() {
@@ -350,6 +352,30 @@
 				this.TabCur = e.currentTarget.dataset.id
 
 			},
+		},
+		watch: {
+			selectedLocation(newData) {
+				console.log("aaa")
+				if (newData) {
+					const {
+						title,
+						location
+					} = newData
+					this.$set(this.tablist[3],"name",title)
+					this.$user.address=title
+					this.formData.signAddress = title
+					this.formData.longitude = location.lng
+					this.formData.latitude = location.lat
+					this.location.curLocation = newData
+					
+					this.$user.formData.signAddress = title
+					this.$user.formData.longitude = location.lng
+					this.$user.formData.latitude = location.lat
+					this.$user.location.curLocation = newData
+					
+					
+				}
+			}
 		}
 
 	}
