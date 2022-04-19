@@ -5,7 +5,7 @@
 
 	<view class="">
 		<!-- 搜索 -->
-		<view class="cu-bar search bg-white"  id="TabCurTab">
+		<view class="cu-bar search bg-white" id="TabCurTab">
 			<view class="action text-cut locaWidth" @click="handleSelect()">
 				<uni-icons type="location" size="18"></uni-icons>
 				<view v-if="formData.signAddress" class="location">
@@ -29,7 +29,7 @@
 		<!-- 轮播图 -->
 		<min-swiper></min-swiper>
 		<!-- end -->
-		<Dynamic v-for="(item,index) in list" :key="item.id" :imgList="item.images.split(',')"
+		<Dynamic v-for="(item,index) in list" :key="item.id" :imgList="item.images==''?'':item.images.split(',')"
 			:avatar="item.userVo.userProtrait" :name="item.userVo.userNikename" :publishTime="item.createTime"
 			:content="item.content" :isFocusOn="item.attentionStatus" :isLike="item.praiseStatus"
 			:isGiveReward="item.isGiveReward" :likeNumber="item.praises" :giveRewardNumber="item.giveRewardNumber"
@@ -68,12 +68,13 @@
 				],
 				// end 
 				addr: "授权位置",
-				address:"未授权位置",
+				address: "未授权位置",
 				// 导航条
 				TabCur: '0',
 				scrollLeft: 0,
 				// 导航条end
-
+				page: 1,
+				totalPage: 0,
 				//导航条
 				tablist: [{
 						id: 1,
@@ -97,9 +98,10 @@
 					},
 
 				],
+				listFlag: false,
 				list: [],
 				formData: {
-					getAddress:"切换位置",
+					getAddress: "切换位置",
 					signAddress: '', // 签到地址
 					longitude: '', // 经度
 					latitude: '' // 维度
@@ -122,12 +124,8 @@
 			minSwiper,
 			Dynamic
 		},
-		onLoad: function() {
-			this.getLocation()
-			this.formData=this.$user.formData
-			this.location=this.$user.location
-		},
 		onShow: function() {
+			this.page = 1
 			this.$myRequest({
 				url: '/article/list',
 				methed: 'get',
@@ -139,15 +137,23 @@
 			}).then(res => {
 
 				this.$data.list = res.data.page.list
-				console.log(this.$data.list)
-				// this.$set(this.$data.list,"list",res.data.page.list)
+				this.totalPage = res.data.page.totalPage;
 
 			})
+
+		},
+		onLoad: function() {
+			this.page = 1
+			this.getLocation()
+			this.formData = this.$user.formData
+			this.location = this.$user.location
+
+
 			//导航条的高度
 			// this.SelectorQuery()
 
 		},
-		//上拉刷新
+		//下拉刷新
 		onPullDownRefresh: function() {
 			this.$myRequest({
 				url: '/article/list',
@@ -173,6 +179,36 @@
 		},
 		//上拉刷新
 		onReachBottom: function() {
+			if (this.totalPage < this.page + 1) {
+				uni.showToast({
+					title: "暂无更多",
+					icon: 'none',
+					duration: 850
+				})
+				return
+			}
+			this.page = this.page + 1;
+			this.$myRequest({
+				url: '/article/list',
+				methed: 'get',
+				data: {
+					limit: 5,
+					page: this.page,
+					user_id: this.$user.id
+				}
+			}).then(res => {
+				if (res.data.page.list.length < 5) {
+					this.listFlag = true
+				}
+				this.list = [...this.list, ...res.data.page.list]
+
+
+				// this.$data.list.add(res.data.page.list)
+				// console.log(this.$data.list)
+				// this.$set(this.$data.list,"list",res.data.page.list)
+
+			})
+
 
 		},
 		methods: {
@@ -200,21 +236,21 @@
 				reverseGeocoder(location)
 					.then(res => {
 						const address = res.result.pois[0].title
-						this.$set(this,"address",address)
-						this.$user.address=address
-						
+						this.$set(this, "address", address)
+						this.$user.address = address
+
 						console.log(this.$user.address)
 						this.formData.signAddress = address
 						this.location.curLocation = res.result
 						this.location.error = false
 						this.location.loading = false
-						
+
 						this.$user.formData.signAddress = address
 						this.$user.location.curLocation = res.result
 						this.$user.location.error = false
 						this.$user.location.loading = false
-						
-						
+
+
 					})
 					.catch(err => {
 						this.$user.location.loading = false
@@ -361,19 +397,19 @@
 						title,
 						location
 					} = newData
-					this.$set(this.tablist[3],"name",title)
-					this.$user.address=title
+					this.$set(this.tablist[3], "name", title)
+					this.$user.address = title
 					this.formData.signAddress = title
 					this.formData.longitude = location.lng
 					this.formData.latitude = location.lat
 					this.location.curLocation = newData
-					
+
 					this.$user.formData.signAddress = title
 					this.$user.formData.longitude = location.lng
 					this.$user.formData.latitude = location.lat
 					this.$user.location.curLocation = newData
-					
-					
+
+
 				}
 			}
 		}

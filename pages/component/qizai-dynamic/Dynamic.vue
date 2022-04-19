@@ -19,11 +19,13 @@
 				</view>
 			</view>
 		</view>
-		
+		 
 		
 		<view class="text">{{content}}</view>
 		<view class="allImage">
-			<view class="imgList">
+			<!-- style 三目运算 -->
+			<!-- {{imgList.length}} :style="{'desplay': (imgList.length == 0 ? 'none':'block')}" -->
+			<view class="imgList" >
 				<view class="images" @tap="previewImg" :data-index="index" v-for="(item,index) in imgList" :key="index">
 					<image class="oneimg" :src="item" mode="aspectFill" :style="{width:imgWidth+'px','max-height':imgHeight+'px'}"></image>
 				</view>

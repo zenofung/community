@@ -34,7 +34,7 @@
 		
 		
 		<!-- 设置详细 -->
-		 <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
+	<!-- 	 <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
 		    <view class="cu-item arrow">
 		      <view class="content" @tap="toIssue_page">
 		        <text class="cuIcon-moneybagfill text-red"></text>
@@ -89,7 +89,7 @@
 		      </navigator>
 		    </view>
 		  </view>
-		  <view class="cu-tabbar-height"></view>
+		  <view class="cu-tabbar-height"></view> -->
 		<!-- 设置详细end -->
 	</view>
 </template>

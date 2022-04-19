@@ -6,8 +6,6 @@ import { user } from './util/user.js'
 import store from './util/store/index.js'
 import './styles/index.scss'
 
-
-
 Vue.config.productionTip = false
 
 App.mpType = 'app'
@@ -17,6 +15,7 @@ Vue.prototype.$user = user
 
 const app = new Vue({
     ...App,
-	store
+	store,
 })
 app.$mount()
+

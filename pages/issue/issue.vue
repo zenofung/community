@@ -10,7 +10,7 @@
 
 			<!-- 内容 -->
 			<view class="cu-form-group margin-top">
-				<textarea style="height: 250rpx;" name="content" maxlength="10000" @input="textareaAInput"
+				<textarea style="height: 250rpx;" name="content" maxlength="10000" @input="textareaAInput"  v-model="content"
 					placeholder="做一个爱分享的人,在这个圈子你就是主角."></textarea>
 			</view>
 			<!-- end -->
@@ -136,6 +136,7 @@
 		data() {
 			return {
 				modalName: '', //模态框开关
+				content:"",
 				picker: [{
 					classify_id: 1,
 					classify_name: '手机'
@@ -226,6 +227,14 @@
 				// console.log(e.detail.value.content)
 				// console.log('form发生了submit事件，携带数据为：' + this.imgList)
 				// console.log('form发生了submit事件，携带数据为：' + this.address)
+				if(e.detail.value.content==""){
+					uni.showToast({
+						title: "内容不能为空",
+						icon: 'none',
+						duration: 850
+					})
+					return
+				}
 				this.$myRequest({
 					url: '/article/save',
 					method: 'post',
@@ -235,16 +244,33 @@
 						articleAddress: this.address,
 						userId: this.$user.id
 					}
-				  }).then(res => {
-					uni.navigateTo({
-						url: `pages/disconver/disconver`
-					})
+				}).then(res => {
+					
+					if (res.data.code == 0) {
+						uni.showToast({
+							title: "发表成功",
+							icon: 'exception',
+							duration: 850
+						})
+						this.imgList=[]
+						this.imgLists=""
+						this.content=""
+					
+						uni.switchTab({
+							url: `../disconver/disconver`
+						})
+
+					}
+					console.log(res)
+					// uni.navigateTo({
+					// 	url: `pages/disconver/disconver`
+					// })
 					// this.$data.list = res.data.page.list
 					// console.log(this.$data.list)
 					// this.$set(this.$data.list,"list",res.data.page.list)
-				
+
 				})
-			
+
 			},
 			// 获取位置信息
 			getLocationInfo(location) {
@@ -315,11 +341,13 @@
 									filePath: res.tempFilePaths[i],
 								}).then(res => {
 									this.imgList.push(res.msg)
-									if(this.imgLists){
-										this.imgLists=res.msg;
+									if (this.imgLists=="") {
+										this.imgLists = res.msg;
+									}else{
+										this.imgLists = this.imgLists + "," + res.msg;
 									}
-								    this.imgLists=this.imgLists+","+res.msg;
-									console.log(res.msg)
+									
+									console.log(this.imgLists)
 									// this.$set(this.$data.list,"list",res.data.page.list)
 
 								})

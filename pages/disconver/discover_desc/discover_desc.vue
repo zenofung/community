@@ -206,7 +206,11 @@
 
 			<view class='msg_bottom bg-white'>
 				<view class='msg_bottom-1'>
-					<input name='msg' placeholder='觉得不错说两句~~' cursor-spacing='10'></input>
+					<input name='msg' placeholder='觉得不错说两句~~' cursor-spacing='10' @input="textareaAInput" :value="content" ></input>
+				</view>
+				<view class='msg_bottom-2'>
+					<button class="cu-btn round  bg-green" role="button" aria-disabled="false" :disabled='sendState'
+						@click="commentSave()">发送</button>
 				</view>
 				<view class='msg_bottom-2'>
 					<text class='cuIcon-message text-icon  lg text-black'></text>
@@ -224,13 +228,12 @@
 
 
 
-	</view>
+	</view> 
 </template>
 <script>
 	import {
 		articleUtil
-	} from "../../../util/articleUtil.js";
-
+	} from "../../../util/articleUtil.js"; 
 	export default {
 		data() {
 			return {
@@ -240,9 +243,12 @@
 					commentEntitySize: {}
 
 				},
+				artId: "",
 				commentSize: 17,
 				//图片
 				imgArr: [],
+				content: "",
+				sendState: true, //默认不能点击
 				// end
 				// 评论内容
 				// discuss: [{
@@ -268,36 +274,82 @@
 		},
 		methods: {
 			onLoad: function(e) {
-				
-				
+
+
 				if (e != null) {
 					this.$myRequest({
 						url: '/article/info/' + e.data + '/' + this.$user.id,
 						methed: 'get'
 					}).then(res => {
 						this.$data.article = res.data.article
-						this.$data.imgArr = res.data.article.images.split(",")
+						this.$data.imgArr = res.data.article.images==""?"":res.data.article.images.split(",")
 						this.$data.article.commentEntitySize = res.data.article.commentEntity.length
 						console.log(this.$data.article.commentEntity)
 
 						// this.$set(this.$data.list,"list",res.data.page.list)
 
 					})
+					this.artId = e.data
 
 				}
 
 
 
 			},
+			textareaAInput: function(e) {
+				var len = e.detail.value;
+				if (len == null || len == '' || len == undefined) {
+					this.sendState = true
+				} else {
+					this.sendState = false
+				}
+				this.content = e.detail.value;
+			},
 			timestampFormat(e) {
 
 				return articleUtil.timestampFormat(e);
 			},
+			//文章评论
+			commentSave(e) {
+				this.$myRequest({
+					url: '/comment/save',
+					method: 'post',
+					data: {
+						"userId": this.$user.id,
+						"artId": this.artId,
+						"content": this.content
+					}
+				}).then(res => {
+					
+					uni.showToast({
+						title:"评论成功",
+						icon:'exception',
+						duration:850
+					})
+					
+					if (res.data.code == 0) {
+						
+						this.$myRequest({
+							url: '/article/info/' + this.artId + '/' + this.$user.id,
+							methed: 'get'
+						}).then(res => {
+							this.$data.article = res.data.article
+							this.$data.imgArr = res.data.article.images.split(",")
+							this.$data.article.commentEntitySize = res.data.article.commentEntity.length
+							// this.$set(this.$data.list,"list",res.data.page.list)
+							this.content=""
+						})
+
+
+					}
+
+				})
+
+
+
+			},
 
 			clickThumbsup(e, index) {
-				console.log(e);
-				console.log(index);
-
 				this.$set(this.$data.article.commentEntity[index], "praiseStatus", !this.$data.article.commentEntity[index]
 					.praiseStatus);
 				if (this.$data.article.commentEntity[index].praiseStatus) {
@@ -335,9 +387,6 @@
 					})
 
 				}
-
-				console.log(this.$data.article.commentEntity[index].praiseStatus);
-				console.log('childThumbsup');
 			},
 
 			// 点击图片打开详细

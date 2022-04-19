@@ -86,12 +86,13 @@
 
 			<view class='msg_bottom bg-white'>
 				<view class='msg_bottom-1'>
-					<input @input='textChange' name='msg' placeholder='觉得不错说两句~~' cursor-spacing="10"></input>
+					<input @input='textChange' name='msg' placeholder='觉得不错说两句~~' cursor-spacing="10"
+						:value="content"></input>
 				</view>
 
 				<view class='msg_bottom-2'>
-					<button class="cu-btn round  bg-green" role="button" aria-disabled="false"
-						:disabled='sendState'>发送</button>
+					<button class="cu-btn round  bg-green" role="button" aria-disabled="false" :disabled='sendState'
+						@click="comcomSave">发送</button>
 				</view>
 
 			</view>
@@ -114,6 +115,7 @@
 					comComEntityList: {},
 					userVo: {}
 				},
+				content: "",
 				// 发送按钮状态
 				sendState: true, //默认不能点击
 			}
@@ -127,10 +129,49 @@
 				} else {
 					this.sendState = false
 				}
+				this.content = e.detail.value;
 			},
 			timestampFormat(e) {
 				return articleUtil.timestampFormat(e);
 			},
+
+			//二级评论
+			comcomSave(e) {
+				this.$myRequest({
+					url: '/comcom/save',
+					method: 'post',
+					data: {
+						"comId": this.comment.id,
+						"comIdTwo": 0,
+						"userId": this.$user.id,
+						"userIdTwo": this.comment.userId,
+						"userName": this.comment.userVo.userNikename,
+						"comContext": this.content
+					}
+				}).then(res => {
+
+					uni.showToast({
+						title: "评论成功",
+						icon: 'exception',
+						duration: 850
+					})
+					this.$myRequest({
+						url: '/article/infoCom/' + this.comment.id + '/' + this.$user.id,
+						methed: 'get'
+					}).then(res => {
+						this.$data.comment = res.data.comment
+						console.log(this.$data.comment)
+						this.content=""
+						// this.$set(this.$data.list,"list",res.data.page.list)
+
+					})
+
+				})
+
+
+
+			},
+
 			clickThumbsup2(e) {
 				console.log(this.$data.comment.praiseStatus)
 				this.$set(this.$data.comment, "praiseStatus", !this.$data.comment
@@ -174,7 +215,8 @@
 				console.log(this.$data.comment.comComEntityList[index]);
 				console.log(index);
 
-				this.$set(this.$data.comment.comComEntityList[index], "praiseStatus", !this.$data.comment.comComEntityList[index]
+				this.$set(this.$data.comment.comComEntityList[index], "praiseStatus", !this.$data.comment.comComEntityList[
+						index]
 					.praiseStatus);
 				if (this.$data.comment.comComEntityList[index].praiseStatus) {
 					this.$myRequest({
@@ -186,7 +228,8 @@
 						}
 					}).then(res => {
 						if (res.data.code == 0) {
-							this.$set(this.$data.comment.comComEntityList[index], "praises", this.$data.comment.comComEntityList[index].praises + 1);
+							this.$set(this.$data.comment.comComEntityList[index], "praises", this.$data.comment
+								.comComEntityList[index].praises + 1);
 
 						}
 
@@ -203,7 +246,8 @@
 						}
 					}).then(res => {
 						if (res.data.code == 0) {
-							this.$set(this.$data.comment.comComEntityList[index], "praises", this.$data.comment.comComEntityList[index].praises - 1);
+							this.$set(this.$data.comment.comComEntityList[index], "praises", this.$data.comment
+								.comComEntityList[index].praises - 1);
 						}
 
 					})
