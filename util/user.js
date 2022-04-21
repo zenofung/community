@@ -21,12 +21,3 @@ export const user = {
 	location
 }
 
-wx.login({
-	success: function(res) {
-		console.log(res); //这里的返回值里面便包含code
-	},
-	fail: function(res) {
-		console.log('登陆失败');
-	},
-
-})

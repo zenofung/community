@@ -58,14 +58,5 @@
       "desc": "授权位置显示最近小区动态"
     }
   },
-  "usingComponents": {
-    "van-button": "/wxcomponents/vant/button/index",
-    "van-cell": "/wxcomponents/vant/cell/index",
-    "van-cell-group": "/wxcomponents/vant/cell-group/index",
-    "van-search": "/wxcomponents/vant/search/index",
-    "van-icon": "/wxcomponents/vant/icon/index",
-    "van-field": "/wxcomponents/vant/field/index",
-    "van-loading": "/wxcomponents/vant/loading/index",
-    "van-info": "/wxcomponents/vant/info/index"
-  }
+  "usingComponents": {}
 }

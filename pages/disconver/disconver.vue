@@ -29,7 +29,7 @@
 		<!-- 轮播图 -->
 		<min-swiper></min-swiper>
 		<!-- end -->
-		<Dynamic v-for="(item,index) in list" :key="item.id" :imgList="item.images==''?'':item.images.split(',')"
+		<Dynamic v-for="(item,index) in list" :key="item.id" :imgList="item.images==''?[]:item.images.split(',')"
 			:avatar="item.userVo.userProtrait" :name="item.userVo.userNikename" :publishTime="item.createTime"
 			:content="item.content" :isFocusOn="item.attentionStatus" :isLike="item.praiseStatus"
 			:isGiveReward="item.isGiveReward" :likeNumber="item.praises" :giveRewardNumber="item.giveRewardNumber"
@@ -147,8 +147,6 @@
 			this.getLocation()
 			this.formData = this.$user.formData
 			this.location = this.$user.location
-
-
 			//导航条的高度
 			// this.SelectorQuery()
 
@@ -233,6 +231,7 @@
 			},
 			// 获取位置信息
 			getLocationInfo(location) {
+				console.log(location)
 				reverseGeocoder(location)
 					.then(res => {
 						const address = res.result.pois[0].title
@@ -249,8 +248,6 @@
 						this.$user.location.curLocation = res.result
 						this.$user.location.error = false
 						this.$user.location.loading = false
-
-
 					})
 					.catch(err => {
 						this.$user.location.loading = false
@@ -262,7 +259,8 @@
 				this.location.loading = true
 				this.location.error = false
 				getLocation()
-					.then(res => {
+					.then(res => {	
+						console.log(res)
 						const {
 							longitude,
 							latitude

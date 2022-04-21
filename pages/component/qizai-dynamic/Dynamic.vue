@@ -128,7 +128,6 @@
 			if(this.userNoShow){
 				this.userDisplay = 'none';
 			}
-			console.log(this.operateNoShow);
 			if(this.operateNoShow){
 				this.operateDisplay = 'none';
 			}
@@ -168,7 +167,6 @@
 			timestampFormat( timestamp ) {
 				
 				var timestamp = new Date(timestamp).getTime()/1000
-				console.log(timestamp)
 				if(!timestamp) return '';
 			    function zeroize( num ) {
 			        return (String(num).length == 1 ? '0' : '') + num;

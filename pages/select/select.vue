@@ -1,7 +1,16 @@
 <template>
   <view class="select-location">
 		<!-- 顶部搜索框 -->
-		<view class="top-search">
+		<view class="cu-bar search bg-white" id="TabCurTab">
+		
+		<view class="search-form round">
+			<text class="cuIcon-search"></text>
+			<input type="text" placeholder="关键词搜索" confirm-type="search"  @click="goSearch"></input>
+		</view>
+			<!-- <view class="cu-avatar round search_img" :style="item.userVo.userProtrait"></view> -->
+		</view>
+		
+<!-- 		<view class="top-search">
 		  <van-search :value="keyword"
 		    background="rgba(255, 255, 255, 0)"
 		    shape="round"
@@ -9,7 +18,7 @@
 		    placeholder="关键词搜索"
 		    @click.native="goSearch">
 		  </van-search>
-		</view>
+		</view> -->
     <map id="map"
       :latitude="latitude"
       :longitude="longitude"

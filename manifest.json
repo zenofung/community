@@ -78,5 +78,18 @@
     },
     "mp-qq" : {
         "appid" : "1109707808"
+    },
+    "h5" : {
+        "router" : {
+            "base" : "",
+            "mode" : "history"
+        },
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : "MINBZ-OPFL6-KJTSI-EWLB3-4QQQ2-KTBSG"
+                }
+            }
+        }
     }
 }

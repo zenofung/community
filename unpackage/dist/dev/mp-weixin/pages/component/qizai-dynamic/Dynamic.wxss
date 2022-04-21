@@ -229,8 +229,6 @@
 
 
 
-
-
 /* 想法图片排列样式 */
 .uni-list-chat__content-extra-text{
 	color: #007AFF;

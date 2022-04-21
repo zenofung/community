@@ -27,7 +27,6 @@
 .search.data-v-4cedc0c6 {
   height: 100%;
   display: flex;
-  flex-direction: column;
   overflow: hidden;
 }
 .search .top-search.data-v-4cedc0c6 {
