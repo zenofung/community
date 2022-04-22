@@ -38,12 +38,12 @@
             v-for="(item) in list"
             :key="item.id"
             @tap="selectedAddress(item)">
-            <van-icon v-if="active === item.id"
+ <!--           <van-icon v-if="active === item.id"
               class="icon"
               name="checked"
               size="34rpx"
               :color="active === item.id ? '#007aff' : ''">
-            </van-icon>
+            </van-icon> -->
             <view class="info">
               <view class="title ellipsis">{{ item.title }}</view>
               <view class="address ellipsis">{{ item.address }}</view>

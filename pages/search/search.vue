@@ -4,7 +4,7 @@
 
 			<view class="search-form round">
 				<text class="cuIcon-search"></text>
-				<input :value="keyword" placeholder="关键词搜索" @input="changeEvent" @confirm="handleSearch">
+				<input :focus="true" :value="keyword" placeholder="关键词搜索" @input="changeEvent" @confirm="handleSearch">
 				</input>
 			</view>
 			<!-- <view class="cu-avatar round search_img" :style="item.userVo.userProtrait"></view> -->
@@ -21,9 +21,7 @@
 					</view>
 				</view>
 				<view v-if="loading" class="loading">
-					<van-loading size="32rpx">
 						<text class="loading-text">加载中...</text>
-					</van-loading>
 				</view>
 				<view v-if="noResult" class="no-result">
 					您搜索的地点不存在或者超出了范围

@@ -231,9 +231,9 @@
 			},
 			// 获取位置信息
 			getLocationInfo(location) {
-				console.log(location)
 				reverseGeocoder(location)
 					.then(res => {
+						console.log(res.result)
 						const address = res.result.pois[0].title
 						this.$set(this, "address", address)
 						this.$user.address = address

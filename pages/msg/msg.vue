@@ -2,7 +2,7 @@
 	<view>
 		
 		<!-- 自定义导航栏 -->
-		<cu-custom   bgColor="bg-gradual-blue" :isBack="true"><block slot="backText">返回</block><block slot="content">毕节职业技术学院</block></cu-custom>
+		<!-- <cu-custom   bgColor="bg-gradual-blue" :isBack="true"><block slot="backText">返回</block><block slot="content">毕节职业技术学院</block></cu-custom> -->
 		<!-- end -->
 		
 		<!-- 头部消息 -->
@@ -10,15 +10,15 @@
 		    <text class='txt_1'></text>
 		    <view class='kuai'>
 		      <view class='interactive' >
-		        <image class='imgs' src='http://load1a.nipic.com/file/20190522/Nipic_29136573_20190522231419687462.png?v=20190522111311'></image>
+		        <image class='imgs' src='https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg'></image>
 		        <text>互动消息</text>
 		      </view>
 		      <view class='notice' @tap='notice' >
-		        <image class='imgs' src='http://load1a.nipic.com/file/20190522/Nipic_29136573_20190522231359364914.png?v=20190522111250'></image>
+		        <image class='imgs' src='https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg'></image>
 		        <text>通知消息</text>
 		      </view>
 		      <view class='logistics' @tap='toLogistics'>
-		        <image class='imgs' src='http://load1a.nipic.com/file/20190522/Nipic_29136573_20190522231334886808.png?v=20190522111225'></image>
+		        <image class='imgs' src='https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg'></image>
 		        <text>交易物流</text>
 		      </view>
 		    </view>
