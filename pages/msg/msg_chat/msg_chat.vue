@@ -10,7 +10,7 @@
 				<view class="cu-avatar radius" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big107000.jpg);"></view>
 				<view class="date">2018年3月23日 13:23</view>
 			</view>
-			<view class="cu-info round">对方撤回一条消息!</view>
+			<!-- <view class="cu-info round">对方撤回一条消息!</view> -->
 			<view class="cu-item">
 				<view class="cu-avatar radius" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big143004.jpg);"></view>
 				<view class="main">
@@ -20,13 +20,13 @@
 				</view>
 				<view class="date "> 13:23</view>
 			</view>
-			<view class="cu-info">
+<!-- 			<view class="cu-info">
 				<text class="cuIcon-roundclosefill text-red "></text> 对方拒绝了你的消息
-			</view>
-			<view class="cu-info">
+			</view> -->
+<!-- 			<view class="cu-info">
 				对方开启了好友验证，你还不是他(她)的好友。请先发送好友验证请求，对方验证通过后，才能聊天。
 				<text class="text-blue">发送好友验证</text>
-			</view>
+			</view> -->
 			<view class="cu-item self">
 				<view class="main">
 					<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg" class="radius" mode="widthFix"></image>
@@ -46,7 +46,7 @@
 				<view class="cu-avatar radius" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big107000.jpg);"></view>
 				<view class="date">13:23</view>
 			</view>
-			<view class="cu-item self">
+<!-- 			<view class="cu-item self">
 				<view class="main">
 					<view class="action">
 						<text class="cuIcon-locationfill text-orange text-xxl"></text>
@@ -57,8 +57,8 @@
 				</view>
 				<view class="cu-avatar radius" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big107000.jpg);"></view>
 				<view class="date">13:23</view>
-			</view>
-			<view class="cu-item">
+			</view> -->
+<!-- 			<view class="cu-item">
 				<view class="cu-avatar radius" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big143004.jpg);"></view>
 				<view class="main">
 					<view class="content shadow">
@@ -69,7 +69,7 @@
 					</view>
 				</view>
 				<view class="date">13:23</view>
-			</view>
+			</view> -->
 		</view>
 
 		<view class="cu-bar foot input" :style="[{bottom:InputBottom+'px'}]">
@@ -101,7 +101,24 @@
 			InputBlur(e) {
 				this.InputBottom = 0
 			}
-		}
+		},
+		onLoad: function(e) {
+			if (e != null) {
+				console.log(e)
+		// 		this.$myRequest({
+		// 			url: '/article/infoCom/' + e.data + '/' + this.$user.id,
+		// 			methed: 'get'
+		// 		}).then(res => {
+		// 			this.$data.comment = res.data.comment
+		// 			console.log(this.$data.comment)
+		
+		// 			// this.$set(this.$data.list,"list",res.data.page.list)
+		
+		// 		})
+		
+			}
+		
+		},
 	}
 </script>
 

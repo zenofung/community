@@ -7,6 +7,7 @@ const formData = {
 	longitude: '', // 经度
 	latitude: '' // 维度
 };
+
 const location = {
 	loading: true,
 	error: false,
@@ -20,4 +21,3 @@ export const user = {
 	formData,
 	location
 }
-
