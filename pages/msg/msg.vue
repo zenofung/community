@@ -60,7 +60,7 @@
 					<view class="cu-tag round bg-orange sm" :style="{display:(itme.onLine==0?'':'none')}">断开连接...</view>
 					<view class="text-gray text-sm flex">
 						<text class="text-cut">
-							{{itme.imMessageEntityLast.magContent}}
+							{{itme.imMessageEntityLast.magContent?itme.imMessageEntityLast.magContent:'-'}}
 						</text>
 					</view>
 				</view>
@@ -132,6 +132,12 @@
 	import {
 		articleUtil
 	} from "../../util/articleUtil.js";
+	import {
+		login,
+		quit,
+		onSocketMessage,
+		sendSocketMessage
+	} from "../../util/websocket.js";
 	export default {
 		data() {
 			return {
@@ -140,17 +146,28 @@
 			}
 		},
 		onLoad: function() {
-			let that=this;
-			uni.connectSocket({
-				url: 'ws://localhost:58080/webSocket'
-			});
+			var that = this;
+			//登录
+			login(this.$user.id)
+			//接收消息
 			uni.onSocketMessage(function(res) {
-				var data = JSON.parse(res.data);
-				if (data.msg == "1") {
-					that.login(data);
+				const e = JSON.parse(res.data)
+				console.log("主界面接收", e)
+				if (e.msg == "1" || e.msg == "0") {
+					that.logins(e)
+				} else if (e.msg == "2") {
+					console.log(e.content.imMagListId)
+					// that.$myRequest({
+					// 	url: '/immessagelist/info/'+e.content.imMagListId,
+					// 	methed: 'get',
+					// }).then(res => {
+					// 	console.log("返回通道", res.data.imMessageList)
+					// 	that.$data.imMessageList.push(res.data.imMessageList)
+					// })
+					
 				}
-			});
 
+			});
 			this.$myRequest({
 				url: '/immessagelist/list',
 				methed: 'get',
@@ -162,61 +179,25 @@
 			}).then(res => {
 				this.$data.imMessageList = res.data.page.list
 			})
-
-			var user = {
-				status: 1,
-				content: {
-					id: this.$user.id,
-					// 连接成功将，用户ID传给服务端
-					content: "login"
-				}
-			}
-			var user = JSON.stringify(user)
-
-			//登录 +心跳
-			uni.onSocketOpen(function(res) {
-				this.timer = setInterval(() => {
-					var ping = {
-						status: "0"
-					}
-					var ping = JSON.stringify(ping)
-					uni.sendSocketMessage({
-						data: ping
-					});
-				}, 6000) // 1000毫秒
-				uni.sendSocketMessage({
-					data: user
-				});
-
-			});
 		},
 
 		destroyed: function() {
-			uni.onSocketClose(function(res) {
-				clearInterval(this.timer);
-				this.timer = null;
-				console.log('WebSocket 已关闭！');
-			});
+			quit();
 		},
-			
+
 		methods: {
-			
 			//好友登录
-			login(e) {
-				console.log(this.$data.imMessageList)
-				for( let [index,meg]  of  this.$data.imMessageList.entries() ){
-					// console.log(index)
-					if(e.loginUser.id==meg.userVo.id){
-						this.$set(this.$data.imMessageList[index], "onLine", 1)
+			logins(e) {
+				console.log("好友登录", e)
+				for (let [index, meg] of this.$data.imMessageList.entries()) {
+					if (e.loginUser.id == meg.userVo.id) {
+						this.$set(this.$data.imMessageList[index], "onLine", e.loginUser.loginStatus)
 						console.log(this.$data.imMessageList[index])
 					}
 				}
-	
-				
-				
-			
+
 			},
-			
+
 			// 跳转到聊天界面
 			toMsgChat: function(e) {
 				console.log(e)
