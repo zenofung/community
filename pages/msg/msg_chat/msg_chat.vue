@@ -5,7 +5,7 @@
 				<view class="cu-item self" v-if="item.messageUser==0? true:false ">
 					<view class="main">
 						<view class="content bg-green shadow">
-<!-- 							<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg" class="radius"
+							<!-- 							<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg" class="radius"
 								mode="widthFix"></image> -->
 							<text>{{item.magContent}}</text>
 						</view>
@@ -16,7 +16,7 @@
 				</view>
 				<!-- <view class="cu-info round">对方撤回一条消息!</view> -->
 				<view class="cu-item" v-if="item.messageUser==0? false:true ">
-					<view class="cu-avatar radius" :style="{'background-image': `url(${item.targetVo.userProtrait})`}">
+					<view class="cu-avatar radius" :style="{'background-image': `url(${item.userVo.userProtrait})`}">
 					</view>
 					<view class="main">
 						<view class="content shadow">
@@ -83,7 +83,7 @@
 				<text class="cuIcon-sound text-grey"></text>
 			</view>
 			<input class="solid-bottom" :adjust-position="false" :focus="false" maxlength="300" cursor-spacing="10"
-				@focus="InputFocus" @input='textChange' @blur="InputBlur" :value="context" ></input>
+				@focus="InputFocus" @input='textChange' @blur="InputBlur" :value="context"></input>
 			<view class="action">
 				<text class="cuIcon-emojifill text-grey"></text>
 			</view>
@@ -108,11 +108,11 @@
 			return {
 				InputBottom: 0,
 				message: [],
-				context:"",
+				context: "",
 				user: {
 					status: 2,
 					content: {
-						userId: "",
+						userId: '',
 						targetId: "login",
 						magContent: "",
 						imMagListId: "",
@@ -123,8 +123,8 @@
 		},
 		methods: {
 			sendMessage() {
-				this.$data.user.content.magContent=this.$data.context
-				console.log("发送消息",this.$data.user)
+				this.$data.user.content.magContent = this.$data.context
+				console.log("发送消息", this.$data.user)
 				sendSocketMessage(this.$data.user);
 			},
 			textChange: function(e) {
@@ -147,11 +147,13 @@
 			},
 		},
 		onLoad: function(e) {
+			var that = this;
 			var that=this;
+			that.$data.user.content.userId= this.$user.userId
 			uni.onSocketMessage(function(res) {
 				var data = JSON.parse(res.data);
 				console.log("聊天界面接收", data)
-				if(data.msg=="2"){
+				if (data.msg == "2") {
 					that.$data.message.push(data.content)
 				}
 			});
@@ -164,6 +166,7 @@
 						limit: 5,
 						page: 1,
 						imList: e.data,
+						userId: this.$user.id
 					}
 				}).then(res => {
 					this.message = res.data.page.list.reverse();
@@ -171,17 +174,21 @@
 					// this.$set(this.$data.list,"list",res.data.page.list)
 				})
 				this.$myRequest({
-					url: '/immessagelist/info/'+e.data,
+					url: '/immessagelist/info/' + e.data,
 					methed: 'get',
 				}).then(res => {
-					this.$data.user.content.userId=res.data.imMessageList.userId
-					this.$data.user.content.targetId=res.data.imMessageList.friendId
-					this.$data.user.content.imMagListId=res.data.imMessageList.id
-					this.$data.user.content.targetVo=res.data.imMessageList.targetVo
-					this.$data.user.content.userVo=res.data.imMessageList.userVo
-					
-					console.log("通道信息",this.$data.user.content)
-					
+					this.$data.user.content.userId=this.$user.id
+					if(this.$user.id==res.data.imMessageList.userId){
+						this.$data.user.content.targetId=res.data.imMessageList.friendId
+					}else{
+						this.$data.user.content.targetId=res.data.imMessageList.userId
+					}
+					this.$data.user.content.imMagListId = res.data.imMessageList.id
+					this.$data.user.content.targetVo = res.data.imMessageList.targetVo
+					this.$data.user.content.userVo = res.data.imMessageList.userVo
+
+					console.log("通道信息", this.$data.user.content)
+
 					// this.$set(this.$data.list,"list",res.data.page.list)
 				})
 

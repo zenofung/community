@@ -54,6 +54,7 @@
 				v-bind:class="{'grayscale': itme.onLine==0}" @tap="toMsgChat(itme.id)">
 				<view class="cu-avatar round lg" :style="{'background-image': `url(${itme.userVo.userProtrait})`}"
 					style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);">
+					
 				</view>
 				<view class="content">
 					<view class="text-grey">{{itme.userVo.userNikename}}</view>
@@ -178,6 +179,7 @@
 				}
 			}).then(res => {
 				this.$data.imMessageList = res.data.page.list
+				console.log("列表数据",this.$data.imMessageList)
 			})
 		},
 
