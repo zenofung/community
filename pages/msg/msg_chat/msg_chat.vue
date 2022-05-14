@@ -125,7 +125,9 @@
 			sendMessage() {
 				this.$data.user.content.magContent = this.$data.context
 				console.log("发送消息", this.$data.user)
+				this.$data.message.push(this.$data.user.content)
 				sendSocketMessage(this.$data.user);
+				this.context=""
 			},
 			textChange: function(e) {
 				var len = e.detail.value;
@@ -176,6 +178,9 @@
 				this.$myRequest({
 					url: '/immessagelist/info/' + e.data,
 					methed: 'get',
+					data: {
+						userId: this.$user.id
+					}
 				}).then(res => {
 					this.$data.user.content.userId=this.$user.id
 					if(this.$user.id==res.data.imMessageList.userId){
@@ -184,7 +189,6 @@
 						this.$data.user.content.targetId=res.data.imMessageList.userId
 					}
 					this.$data.user.content.imMagListId = res.data.imMessageList.id
-					this.$data.user.content.targetVo = res.data.imMessageList.targetVo
 					this.$data.user.content.userVo = res.data.imMessageList.userVo
 
 					console.log("通道信息", this.$data.user.content)

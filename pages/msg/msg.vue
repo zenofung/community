@@ -146,6 +146,20 @@
 				timer: null // 定时器名称  
 			}
 		},
+		onShow() {
+			this.$myRequest({
+				url: '/immessagelist/list',
+				methed: 'get',
+				data: {
+					limit: 5,
+					page: 1,
+					userId: this.$user.id
+				}
+			}).then(res => {
+				this.$data.imMessageList = res.data.page.list
+				console.log("列表数据",this.$data.imMessageList)
+			})
+		},
 		onLoad: function() {
 			var that = this;
 			//登录
@@ -169,18 +183,7 @@
 				}
 
 			});
-			this.$myRequest({
-				url: '/immessagelist/list',
-				methed: 'get',
-				data: {
-					limit: 5,
-					page: 1,
-					userId: this.$user.id
-				}
-			}).then(res => {
-				this.$data.imMessageList = res.data.page.list
-				console.log("列表数据",this.$data.imMessageList)
-			})
+
 		},
 
 		destroyed: function() {

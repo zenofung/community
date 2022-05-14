@@ -1,5 +1,5 @@
 
-const BASE_URL = 'http://localhost:8081/api'
+const BASE_URL = 'http://localhost:8082/api'
 // const BASE_URL = 'http://192.168.1.11:8080/wine'
 // const BASE_URL = 'https://www.homiesocial.cn/wine'
 // 通过export向外暴露一个方法，方法名叫myRequest,调用myRequest方法时会向方法中传递一个对象options
