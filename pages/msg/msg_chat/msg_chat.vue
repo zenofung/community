@@ -125,7 +125,10 @@
 			sendMessage() {
 				this.$data.user.content.magContent = this.$data.context
 				console.log("发送消息", this.$data.user)
+				this.$data.message.push(this.$data.user.content)
 				sendSocketMessage(this.$data.user);
+				this.context=""
+				
 			},
 			textChange: function(e) {
 				var len = e.detail.value;
@@ -146,6 +149,7 @@
 				return articleUtil.timestampFormat(e);
 			},
 		},
+
 		onLoad: function(e) {
 			var that = this;
 			var that=this;
@@ -154,7 +158,9 @@
 				var data = JSON.parse(res.data);
 				console.log("聊天界面接收", data)
 				if (data.msg == "2") {
+					console.log()
 					that.$data.message.push(data.content)
+
 				}
 			});
 			if (e != null) {
@@ -176,6 +182,9 @@
 				this.$myRequest({
 					url: '/immessagelist/info/' + e.data,
 					methed: 'get',
+					data: {
+						userId: this.$user.id
+					}
 				}).then(res => {
 					this.$data.user.content.userId=this.$user.id
 					if(this.$user.id==res.data.imMessageList.userId){
@@ -184,7 +193,6 @@
 						this.$data.user.content.targetId=res.data.imMessageList.userId
 					}
 					this.$data.user.content.imMagListId = res.data.imMessageList.id
-					this.$data.user.content.targetVo = res.data.imMessageList.targetVo
 					this.$data.user.content.userVo = res.data.imMessageList.userVo
 
 					console.log("通道信息", this.$data.user.content)
