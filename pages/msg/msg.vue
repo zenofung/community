@@ -29,7 +29,7 @@
 		<!-- 聊天消息 -->
 		<view class="cu-list menu-avatar  card-menu martop">
 
-			<view class="cu-item">
+			<!-- <view class="cu-item">
 				<view class="cu-avatar round lg"
 					style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Taric.png);">
 					<view class="cu-tag badge">99+</view>
@@ -45,11 +45,11 @@
 					</view>
 				</view>
 				<view class="action">
-					<view class="text-grey text-xs">22:20</view>
+					<view class="text-grey text-xs">22:20</view> -->
 					<!-- <view class="cuIcon-notice_forbid_fill text-gray"></view> -->
-				</view>
+	<!-- 			</view>
 			</view>
-
+ -->
 			<view class="cu-item " v-for="(itme) in imMessageList" :key="itme.id"
 				v-bind:class="{'grayscale': itme.onLine==0}" @tap="toMsgChat(itme.id)">
 				<view class="cu-avatar round lg" :style="{'background-image': `url(${itme.userVo.userProtrait})`}"
@@ -171,7 +171,16 @@
 				if (e.msg == "1" || e.msg == "0") {
 					that.logins(e)
 				} else if (e.msg == "2") {
+					uni.$emit('message',e.content);
 					console.log(e.content.imMagListId)
+					that.imMessageList.forEach(function(item,index){
+						if(item.id==e.content.imMagListId){
+							item.unread=item.unread+1
+							console.log(item,index)
+							item.imMessageEntityLast=e.content
+						}
+					})
+					
 					// that.$myRequest({
 					// 	url: '/immessagelist/info/'+e.content.imMagListId,
 					// 	methed: 'get',
