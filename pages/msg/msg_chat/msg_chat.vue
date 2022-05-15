@@ -109,6 +109,7 @@
 				InputBottom: 0,
 				message: [],
 				context: "",
+				imMagListId:"",
 				user: {
 					status: 2,
 					content: {
@@ -128,6 +129,7 @@
 				this.$data.message.push(this.$data.user.content)
 				sendSocketMessage(this.$data.user);
 				this.context=""
+				
 			},
 			textChange: function(e) {
 				var len = e.detail.value;
@@ -148,19 +150,26 @@
 				return articleUtil.timestampFormat(e);
 			},
 		},
+		onUnload() {  
+			// 移除监听事件  
+				uni.$off('message');  
+			},
 		onLoad: function(e) {
 			var that = this;
 			var that=this;
 			that.$data.user.content.userId= this.$user.userId
-			uni.onSocketMessage(function(res) {
-				var data = JSON.parse(res.data);
-				console.log("聊天界面接收", data)
-				if (data.msg == "2") {
-					that.$data.message.push(data.content)
+			uni.$on('message',(res)=>{  
+			    console.log("监听函数接收",res)
+				if(res.imMagListId==this.imMagListId){
+						that.$data.message.push(res)
 				}
-			});
+			
+			})
+				
+			
 			if (e != null) {
 				console.log(e.data)
+				this.imMagListId=e.data
 				this.$myRequest({
 					url: '/immessage/list/',
 					methed: 'get',
