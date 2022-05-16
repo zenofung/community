@@ -61,13 +61,13 @@
 					<view class="cu-tag round bg-orange sm" :style="{display:(itme.onLine==0?'':'none')}">断开连接...</view>
 					<view class="text-gray text-sm flex">
 						<text class="text-cut">
-							{{itme.imMessageEntityLast.magContent?itme.imMessageEntityLast.magContent:'-'}}
+							{{itme.imMessageEntityLast.magContent?itme.imMessageEntityLast.magContent:''}}
 						</text>
 					</view>
 				</view>
 				<view class="action">
 					<view class="text-grey text-xs">{{ timestampFormat(itme.imMessageEntityLast.createTime) }}</view>
-					<view class="cu-tag round bg-red sm">{{ itme.unread }}</view>
+					<view class="cu-tag round bg-red sm" :style="{display:(itme.unread==0?'none':'')}">{{ itme.unread }}</view>
 				</view>
 			</view>
 

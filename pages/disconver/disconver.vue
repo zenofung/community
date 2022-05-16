@@ -2,7 +2,7 @@
 
 
 	<!-- <bar></bar> -->
-
+	
 	<view class="">
 		<!-- 搜索 -->
 		<view class="cu-bar search bg-white" id="TabCurTab">
@@ -30,14 +30,15 @@
 		<min-swiper></min-swiper>
 		<!-- end -->
 		<Dynamic v-for="(item,index) in list" :key="item.id" :imgList="item.images==''?[]:item.images.split(',')"
-			:avatar="item.userVo.userProtrait" :name="item.userVo.userNikename" :publishTime="item.createTime"
-			:content="item.content" :isFocusOn="item.attentionStatus" :isLike="item.praiseStatus"
-			:isGiveReward="item.isGiveReward" :likeNumber="item.praises" :giveRewardNumber="item.giveRewardNumber"
-			:chatNumber="item.commentEntity" @clickDynamic="clickDynamic(index)" @clickUser="clickUser(item.id)"
+			:avatar="item.userVo.userProtrait" :userId="item.userVo.id" :name="item.userVo.userNikename"
+			:publishTime="item.createTime" :content="item.content" :isFocusOn="item.attentionStatus"
+			:isLike="item.praiseStatus" :isGiveReward="item.isGiveReward" :likeNumber="item.praises"
+			:giveRewardNumber="item.giveRewardNumber" :chatNumber="item.commentEntity"
+			@clickDynamic="clickDynamic(index)" @clickUser="clickUser(item.id)"
 			@clickFocus="clickFocus(index,item.userId)" @clickThumbsup="clickThumbsup(item.id,index)"
-			@clickGiveReward="clickGiveReward(item.id)" @clickChat="clickChat(item.id)">
+			@clickGiveReward="clickGiveReward(item.userVo.id)" @clickChat="clickChat(item.id)">
 		</Dynamic>
-
+		<denglu></denglu>
 	</view>
 
 
@@ -49,9 +50,10 @@
 	import TopBar from "../component/topTab.vue";
 	import minSwiper from "../component/minSwiper.vue";
 	import Dynamic from '../component/qizai-dynamic/Dynamic.vue';
+	import denglu  from '../component/denglu.vue';
 	import {
 		mapGetters,
-		mapMutations
+		mapMutations,
 	} from 'vuex'
 	import {
 		formatDate,
@@ -122,7 +124,8 @@
 			bar,
 			TopBar,
 			minSwiper,
-			Dynamic
+			Dynamic,
+			denglu
 		},
 		onShow: function() {
 			this.page = 1
@@ -138,7 +141,7 @@
 
 				this.$data.list = res.data.page.list
 				this.totalPage = res.data.page.totalPage;
-
+				console.log("文章数据", this.$data.list)
 			})
 
 		},
@@ -259,7 +262,7 @@
 				this.location.loading = true
 				this.location.error = false
 				getLocation()
-					.then(res => {	
+					.then(res => {
 						console.log(res)
 						const {
 							longitude,
@@ -360,11 +363,27 @@
 				console.log(this.list[index].praiseStatus);
 				console.log('childThumbsup');
 			},
-			// 点击打赏
+			// 聊天
 			clickGiveReward(e) {
-
 				console.log(e);
-				console.log('clickGiveReward');
+				this.$myRequest({
+					url: '/immessagelist/save',
+					method: 'post',
+					data: {
+						"userId": this.$user.id,
+						"friendId": e
+					}
+				}).then(res => {
+					console.log(res)
+					if (res.statusCode == 200) {
+						//先建立通道  再跳转聊天
+						uni.navigateTo({
+							url: "/pages/msg/msg_chat/msg_chat?data=" + res.data.imMessageList.id
+						})
+
+					}
+				})
+
 			},
 			// 点击聊天
 			clickChat(e) {
