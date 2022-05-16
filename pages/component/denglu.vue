@@ -12,6 +12,8 @@
 			</view>
 			<view style="padding:50upx 0; padding-bottom:68upx;">
 				<button type='warn' open-type="getUserInfo" @getuserinfo="mpGetUserInfo" style="background:#F6644D; margin:0 80upx;">请登录</button>
+				<button type='warn' open-type="getUserInfo" @getuserinfo="mpGetUserInfo" style="background:#F6644D; margin:0 80upx;">游客登录</button>
+			
 			</view>
 		</view>
 		<view class="uni-mask" v-if="bannerShow"></view>

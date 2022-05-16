@@ -27,7 +27,7 @@
 
 
 		<!-- 聊天消息 -->
-		<view class="cu-list menu-avatar  card-menu martop">
+		<view class="contentbottom cu-list menu-avatar  card-menu martop content">
 
 			<!-- <view class="cu-item">
 				<view class="cu-avatar round lg"
@@ -142,11 +142,17 @@
 	export default {
 		data() {
 			return {
+				listFlag: false,
+				page: 1,
+				totalPage: 0,
 				imMessageList: [],
 				timer: null // 定时器名称  
 			}
 		},
 		onShow() {
+			this.listFlag= false;
+			this.page= 1,
+			this.totalPage= 0,
 			this.$myRequest({
 				url: '/immessagelist/list',
 				methed: 'get',
@@ -156,9 +162,47 @@
 					userId: this.$user.id
 				}
 			}).then(res => {
+				console.log("列表数据",res)
 				this.$data.imMessageList = res.data.page.list
-				console.log("列表数据",this.$data.imMessageList)
+				this.totalPage = res.data.page.totalPage;
+				
 			})
+		},
+		//上拉刷新
+		onReachBottom: function() {
+			console.log("上拉",this.totalPage)
+			if (this.totalPage < this.page + 1) {
+				uni.showToast({
+					title: "暂无更多",
+					icon: 'none',
+					duration: 850
+				})
+				return
+			}
+			this.page = this.page + 1;
+			this.$myRequest({
+				url: '/immessagelist/list',
+				methed: 'get',
+				data: {
+					limit: 5,
+					page: this.page,
+					userId: this.$user.id
+				}
+			}).then(res => {
+				console.log("下拉返回数据",res)
+				if (res.data.page.list.length < 5) {
+					this.listFlag = true
+				}
+				this.imMessageList = [...this.imMessageList, ...res.data.page.list]
+		
+		
+				// this.$data.list.add(res.data.page.list)
+				// console.log(this.$data.list)
+				// this.$set(this.$data.list,"list",res.data.page.list)
+		
+			})
+		
+		
 		},
 		onLoad: function() {
 			var that = this;

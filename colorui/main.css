@@ -1221,6 +1221,10 @@ button.cuIcon.lg {
 	left: 146upx;
 	width: calc(100% - 96upx - 60upx - 120upx - 20upx);
 	line-height: 1.6em;
+
+}
+.contentbottom{
+		 padding-bottom: var(--window-bottom);
 }
 
 .cu-list.menu-avatar>.cu-item .content.flex-sub {
@@ -1956,6 +1960,7 @@ button.cuIcon.lg {
 .cu-timeline {
 	display: block;
 	background-color: #ffffff;
+	height:100%;
 }
 
 .cu-timeline .cu-time {
@@ -2042,6 +2047,7 @@ button.cuIcon.lg {
 .cu-chat {
 	display: flex;
 	flex-direction: column;
+
 }
 
 .cu-chat .cu-item {

@@ -38,7 +38,7 @@
 			@clickFocus="clickFocus(index,item.userId)" @clickThumbsup="clickThumbsup(item.id,index)"
 			@clickGiveReward="clickGiveReward(item.userVo.id)" @clickChat="clickChat(item.id)">
 		</Dynamic>
-		<denglu></denglu>
+		<!-- <denglu></denglu> -->
 	</view>
 
 

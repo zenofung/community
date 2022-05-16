@@ -17,7 +17,9 @@
 			"style": {}
 		}, {
 			"path": "pages/msg/msg",
-			"style": {}
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		}, {
 			"path": "pages/my/my",
 			"style": {}
@@ -70,7 +72,9 @@
 			"style": {}
 		}, {
 			"path": "pages/msg/msg_chat/msg_chat",
-			"style": {}
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		}, {
 			"path": "pages/msg/msg_inform/msg_inform",
 			"style": {}
