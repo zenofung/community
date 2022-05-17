@@ -3,10 +3,15 @@
 		<scroll-view class="cu-chat contentbottoms">
 			<view v-for="(item) in message" :key="item.magId">
 				<view class="cu-item self" v-if="item.messageUser==0? true:false ">
+
 					<view class="main">
+					<view class="cu-info"v-if="item.msgStatus==null?false:true" v-on:click="sendMessage2(item.magContent)" > 
+						<text class="cuIcon-roundclosefill text-red "></text> 点击重新发送
+					</view>
 						<view class="content bg-green shadow">
 							<!-- 							<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg" class="radius"
 								mode="widthFix"></image> -->
+
 							<text>{{item.magContent}}</text>
 						</view>
 					</view>
@@ -20,6 +25,7 @@
 					</view>
 					<view class="main">
 						<view class="content shadow">
+
 							<text>{{item.magContent}}</text>
 						</view>
 					</view>
@@ -127,10 +133,14 @@
 				}
 			};
 		},
-		// onShow: function() {
-		// 	this.scrollToBottom()
-		// },
 		mounted() {
+				if(window.name == ""){
+			           console.log("首次被加载");
+			 	   // 在首次进入页面时我们给window.name设置一个固定值(isRefresh) 
+			           window.name = "isRefresh"; 
+			       }else if(window.name == "isRefresh"){
+			           console.log("页面被刷新");
+			       }
 			this.scrollToBottom();
 		},
 		//每次页面渲染完之后滚动条在最底部
@@ -152,6 +162,7 @@
 					}).exec()
 				})
 			},
+			
 
 			sendMessage() {
 				console.log("发送消息", this.$data.user)
@@ -164,13 +175,48 @@
 					messageUser: 0
 				}
 				this.$data.user.content.magContent = this.$data.context
+			
+				console.log("发送内容", this.$data.user)
+			    let	usr= JSON.stringify(this.$data.user)
+				 sendSocketMessage(this.$data.user).then(res=>{
+					 if(res[0]!=null){
+						 console.log("重新连接",res)
+						 contexts.msgStatus=1;
+						 login(this.$user.id)
+					 }
+				})
 				console.log("push内容", contexts)
 				this.$data.message.push(contexts)
-				console.log("发送内容", this.$data.user)
-				sendSocketMessage(this.$data.user);
 				this.context = ""
 				this.scrollToBottom();
 
+			},
+			sendMessage2(e) {
+				
+				console.log("发送消息", e)
+				let contexts = {
+					userId: this.$data.user.content.userId,
+					targetId: this.$data.user.content.targetId,
+					magContent: e,
+					imMagListId: this.$data.user.content.imMagListId,
+					userVo: this.$data.user.content.userVo,
+					messageUser: 0
+				}
+				this.$data.user.content.magContent = e
+			
+				console.log("发送内容", this.$data.user)
+			    let	usr= JSON.stringify(this.$data.user)
+				 sendSocketMessage(this.$data.user).then(res=>{
+					 if(res[0]!=null){
+						 console.log("重新连接",res)
+						 contexts.msgStatus=1;
+					 }
+				})
+				console.log("push内容", contexts)
+				this.$data.message.push(contexts)
+				this.context = ""
+				this.scrollToBottom();
+			
 			},
 			textChange: function(e) {
 				var len = e.detail.value;
@@ -192,16 +238,19 @@
 			},
 		},
 		onUnload() {
+			console.log("聊天页面关闭")
 			// 移除监听事件  
 			uni.$off('message');
 		},
+
+		
 		//下拉刷新
 		onPullDownRefresh: function() {
 			//模拟加载完成
 			setTimeout(function() {
 				uni.stopPullDownRefresh();
 			}, 200);
-			
+
 
 			console.log("上拉刷新")
 			if (this.totalPage < this.page + 1) {
@@ -223,7 +272,6 @@
 					userId: this.$user.id
 				}
 			}).then(res => {
-
 				if (res.data.page.list.length < 20) {
 					this.listFlag = true
 				}
@@ -233,11 +281,11 @@
 				// this.message = [...msg,...this.message]
 				if (res.data.page.list.length < 20) {
 					this.listFlag = true
-					let size=res.data.page.list.length
-					console.log(size*100)
+					let size = res.data.page.list.length
+					console.log(size * 100)
 					this.$nextTick(() => {
 						uni.createSelectorQuery().select(".cu-chat").boundingClientRect((res) => {
-				
+
 							uni.pageScrollTo({
 								duration: 0, // 过渡时间
 								scrollTop: size, // 滚动的实际距离
@@ -245,7 +293,7 @@
 							// this.scrollH = res.height;
 						}).exec()
 					})
-				}else{
+				} else {
 					this.$nextTick(() => {
 						uni.createSelectorQuery().select(".cu-chat").boundingClientRect((res) => {
 							console.log(res.height)
@@ -254,16 +302,29 @@
 								scrollTop: this.scrollH, // 滚动的实际距离
 							})
 							this.scrollH = res.height;
-								
+
 						}).exec()
 					})
 				}
-	
-				
+
+
 			})
 
 
 		},
+		destroyed: function() {
+			this.$myRequest({
+				url: '/immessage/updateMessageStatus',
+				methed: 'get',
+				data: {
+					msgList: this.imMagListId,
+					userId: this.$user.id
+				}
+			}).then(res => {})
+			// quit();
+			console.log("destroyed")
+		},
+
 		// 页面滚动
 		onLoad: function(e) {
 			var that = this;

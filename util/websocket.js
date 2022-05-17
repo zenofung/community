@@ -23,8 +23,9 @@ function login(userid) {
 		}, 6000) // 1000毫秒
 		sendSocketMessage(user)
 	});
-
+	return Promise.resolve("ok")
 }
+
 function onSocketMessage(){
 	uni.onSocketMessage(function(res) {
 		return JSON.parse(res.data);
@@ -39,9 +40,9 @@ function quit(){
 }
 
 function sendSocketMessage(data){
-	uni.sendSocketMessage({
+	return uni.sendSocketMessage({
 		data: JSON.stringify(data)
-	});
+	})
 }
 
 export {
