@@ -8,12 +8,14 @@
 				</view>
 			</view>
 			<view>
-				<image src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg" style="width:100%;" mode="widthFix"></image>
+				<image src="https://www.homiesocial.cn/static/miniImage/14a05903-3a4d-4dd0-9cda-5e3f1d9b50f5.jpg"
+					style="width:100%;" mode="widthFix"></image>
 			</view>
-			<view style="padding:50upx 0; padding-bottom:68upx;">
-				<button type='warn' open-type="getUserInfo" @getuserinfo="mpGetUserInfo" style="background:#F6644D; margin:0 80upx;">请登录</button>
-				<button type='warn' open-type="getUserInfo" @getuserinfo="mpGetUserInfo" style="background:#F6644D; margin:0 80upx;">游客登录</button>
-			
+			<view style="padding:30upx 0; padding-bottom:68upx;">
+				<button type='warn' open-type="getUserInfo" @getuserinfo="mpGetUserInfo"
+					style="background:#F6644D; margin:0 80upx;">登录</button>
+				<view @click="tourist()" style="margin: 0 auto; text-align: center;color: #303133;"><text>游客登录>></text>
+				</view>
 			</view>
 		</view>
 		<view class="uni-mask" v-if="bannerShow"></view>
@@ -21,11 +23,13 @@
 	</view>
 </template>
 <script>
-    //保存登陆态
-    var SESSION_KEY = 'denglutai'
+	//保存登陆态
+	var SESSION_KEY = 'denglutai'
 	export default {
 		data() {
 			return {
+				imgageUrl: '',
+				nickname: '',
 				bannerShow: false
 			}
 		},
@@ -56,6 +60,23 @@
 			}
 		},
 		methods: {
+			tourist: function() {
+				console.log("游客登录")
+				this.$myRequest({
+					url: '/user/save',
+					method: 'post',
+					data: {
+						"openId": "0",
+						"tourist": 1,
+					}
+				}).then(res => {
+					console.log("创建游客成功",res)
+					if(res.data.code==0){
+						//直接登录
+						
+					}
+				})
+			},
 			closeBanner: function() {
 				uni.reLaunch({
 					url: '/pages/index/index'
@@ -64,8 +85,8 @@
 			mpGetUserInfo(result) {
 				var that = this
 				if (result.detail.errMsg === 'getUserInfo:ok') {
-				//小程序返回登陆态，code等，后续需要调用自己的api处理
-					uni.setStorageSync(SESSION_KEY,result.authResult)
+					//小程序返回登陆态，code等，后续需要调用自己的api处理
+					uni.setStorageSync(SESSION_KEY, result.authResult)
 					that.bannerShow = false;
 				} else {
 					uni.showModal({
