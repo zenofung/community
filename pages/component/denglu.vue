@@ -24,30 +24,22 @@
 </template>
 <script>
 	//保存登陆态
-	var SESSION_KEY = 'denglutai'
+	var TOKEN_KEY = 'authorization'
 	export default {
 		data() {
 			return {
 				imgageUrl: '',
 				nickname: '',
-				bannerShow: false
+				bannerShow: true
 			}
 		},
 		created() {
-			var session = uni.getStorageSync(SESSION_KEY)
-			//如果存在session，已经登陆
+			var session = uni.getStorageSync(TOKEN_KEY)
+			// 如果存在session，已经登陆
 			if (session) {
+				console.log("token", session)
 				//检测当前用户登录态是否有效
-				var that = this
-				uni.checkSession({
-					success: function() {
-						that.bannerShow = false;
-					},
-					fail: function() {
-						uni.removeStorageSync(SESSION_KEY);
-						that.bannerShow = true;
-					},
-				});
+				this.bannerShow = false;
 			} else {
 				this.bannerShow = true;
 			}
@@ -59,28 +51,70 @@
 				});
 			}
 		},
+
 		methods: {
 			tourist: function() {
+				let that = this
 				console.log("游客登录")
+				let rundom = that.rund()
 				this.$myRequest({
 					url: '/user/save',
 					method: 'post',
 					data: {
-						"openId": "0",
+						"openId": rundom,
 						"tourist": 1,
+						"userPhone": rundom,
+						"userName": rundom,
 					}
 				}).then(res => {
-					console.log("创建游客成功",res)
-					if(res.data.code==0){
+					console.log("创建游客成功", res)
+					this.$user.id=res.data.user.id;
+					uni.setStorageSync("userId",res.data.user.id)
+					
+					if (res.data.code == 0) {
 						//直接登录
-						
+						this.$myRequest({
+							url: '/login',
+							method: 'post',
+							data: {
+								"userPhone": "17865655258",
+								"openId": "1212"
+							}
+						}).then(res => {
+							console.log("登录成功", res)
+							if (res.data.code == 0) {
+								uni.setStorageSync(TOKEN_KEY, res.data.token)
+								console.log(this.$user.id)
+								that.bannerShow = false;
+							}
+						})
+
 					}
 				})
 			},
+
 			closeBanner: function() {
 				uni.reLaunch({
 					url: '/pages/index/index'
 				});
+			},
+			rund() {
+				var code = '';
+				//设置长度，这里看需求，我这里设置了4
+				var codeLength = 6;
+
+				//设置随机字符
+				var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+				//循环codeLength 我设置的4就是循环4次
+				for (var i = 0; i < codeLength; i++) {
+					//设置随机数范围,这设置为0 ~ 36
+					var index = Math.floor(Math.random() * 9);
+
+					//字符串拼接 将每次随机的字符 进行拼接
+					code += random[index];
+				}
+				return code;
 			},
 			mpGetUserInfo(result) {
 				var that = this
