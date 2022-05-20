@@ -1,8 +1,8 @@
 
-const id = '';
+const id = '1503003230302347265';
 
-
-
+const avatar='';
+const userNikename='';
 const age = 24;
 const address = "未授权位置";
 const formData = {
@@ -21,6 +21,8 @@ const location = {
 export const user = {
 	id,
 	age,
+	avatar,
+	userNikename,
 	address,
 	formData,
 	location

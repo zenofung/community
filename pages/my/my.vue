@@ -1,12 +1,12 @@
 <template>
 	<view>
 		<view class="UCenter-bg" catchtap='toMy_detail'>
-		    <image src="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" class="png"></image>
+		    <image :src="avatar" class="png"></image>
 		    <view class="text-xl"> 
 		    <!-- <text>Amibition</text>   -->
 		    </view>
 		    <view class="margin-top-sm">
-		      <text>Amibition</text>
+		      <text>{{userNikename}}</text>
 		    </view>
 		    <image src="https://raw.githubusercontent.com/weilanwl/ColorUI/master/demo/images/wave.gif" mode="scaleToFill" class="gif-wave"></image>
 		  </view>
@@ -98,8 +98,14 @@
 	export default {
 		data() {
 			return {
-				
+				userNikename : '',
+				avatar : ''
 			}
+		},
+		onShow: function() {
+			console.log("asfsad",this.$user.userNikename)
+			this.userNikename=this.$user.userNikename
+			this.avatar=this.$user.avatar
 		},
 		methods: {
 			  // 清除全部缓存

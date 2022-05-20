@@ -35,9 +35,9 @@
 		},
 		created() {
 			var session = uni.getStorageSync(TOKEN_KEY)
+			console.log("token", session)
 			// 如果存在session，已经登陆
 			if (session) {
-				console.log("token", session)
 				//检测当前用户登录态是否有效
 				this.bannerShow = false;
 			} else {
@@ -77,8 +77,8 @@
 							url: '/login',
 							method: 'post',
 							data: {
-								"userPhone": "17865655258",
-								"openId": "1212"
+								"userPhone": res.data.user.userName,
+								"openId": res.data.user.openId
 							}
 						}).then(res => {
 							console.log("登录成功", res)

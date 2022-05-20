@@ -13,7 +13,7 @@ function login(userid) {
 	}
 
 	uni.connectSocket({
-		url: 'ws://localhost:58080/webSocket'
+		url: 'wss://www.homiesocial.cn/webSocket'
 	});
 	//登录 +心跳
 	uni.onSocketOpen(function(res) {

@@ -274,7 +274,8 @@
 		},
 		methods: {
 			onLoad: function(e) {
-
+				console.log("userId",this.$user.id)
+				
 
 				if (e != null) {
 					this.$myRequest({
