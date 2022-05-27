@@ -38,7 +38,7 @@
 			@clickFocus="clickFocus(index,item.userId)" @clickThumbsup="clickThumbsup(item.id,index)"
 			@clickGiveReward="clickGiveReward(item.userVo.id)" @clickChat="clickChat(item.id)">
 		</Dynamic>
-		<denglu></denglu>
+		<denglu v-if="bannerShow"></denglu>
 	</view>
 
 
@@ -64,6 +64,7 @@
 	export default {
 		data() {
 			return {
+				bannerShow : true,
 				//图片
 				imgArr: [
 					'http://bpic.588ku.com/element_origin_min_pic/16/10/30/528aa13209e86d5d9839890967a6b9c1.jpg',
@@ -128,6 +129,17 @@
 			denglu
 		},
 		onShow: function() {
+			var TOKEN_KEY = 'authorization'
+			var session = uni.getStorageSync(TOKEN_KEY)
+			console.log("token", session)
+			// 如果存在session，已经登陆
+			if (session) {
+				//检测当前用户登录态是否有效
+				this.bannerShow = false;
+			} else {
+				this.bannerShow = true;
+			}
+			
 			this.page = 1
 			this.$myRequest({
 				url: '/article/list',

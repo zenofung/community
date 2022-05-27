@@ -12,7 +12,7 @@
 					style="width:100%;" mode="widthFix"></image>
 			</view>
 			<view style="padding:30upx 0; padding-bottom:68upx;">
-				<button type='warn' open-type="getUserInfo" @getuserinfo="mpGetUserInfo"
+				<button type='warn' open-type="getUserInfo" @getuserinfo="mpGetUserInfo" @click="userLogin()"
 					style="background:#F6644D; margin:0 80upx;">登录</button>
 				<view @click="tourist()" style="margin: 0 auto; text-align: center;color: #303133;"><text>游客登录>></text>
 				</view>
@@ -68,9 +68,9 @@
 					}
 				}).then(res => {
 					console.log("创建游客成功", res)
-					this.$user.id=res.data.user.id;
-					uni.setStorageSync("userId",res.data.user.id)
-					
+					this.$user.id = res.data.user.id;
+					uni.setStorageSync("userId", res.data.user.id)
+
 					if (res.data.code == 0) {
 						//直接登录
 						this.$myRequest({
@@ -92,12 +92,18 @@
 					}
 				})
 			},
-
-			closeBanner: function() {
-				uni.reLaunch({
-					url: '/pages/index/index'
-				});
+			userLogin() {
+				console.log("登录")
+				uni.navigateTo({
+					url: '/pages/login/login'
+				})
 			},
+
+			// closeBanner: function() {
+			// 	uni.reLaunch({
+			// 		url: '/pages/index/index'
+			// 	});
+			// },
 			rund() {
 				var code = '';
 				//设置长度，这里看需求，我这里设置了4

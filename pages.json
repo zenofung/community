@@ -10,7 +10,8 @@
 		{
 			"path": "pages/disconver/disconver",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText":"文章"
 			}
 		}, {
 			"path": "pages/issue/issue",
@@ -36,8 +37,12 @@
 				"navigationBarTitleText": "搜索"
 			}
 		},
-
-
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText":"登录"
+			}
+		},
 		// {
 		// 	"path":"pages/home/home_grid/home_grid",
 		// 	"style":{
@@ -66,7 +71,8 @@
 		// },
 		{
 			"path": "pages/disconver/discover_desc/discover_desc",
-			"style": {}
+			"style": {
+			}
 		}, {
 			"path": "pages/disconver/discover_desc_more/discover_desc_more",
 			"style": {}
