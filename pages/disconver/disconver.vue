@@ -60,7 +60,12 @@
 		reverseGeocoder,
 		getLocation
 	} from '@/util/index.js'
-
+	import {
+		login,
+		quit,
+		onSocketMessage,
+		sendSocketMessage
+	} from "../../util/websocket.js";
 	export default {
 		data() {
 			return {
@@ -374,6 +379,7 @@
 			},
 			// 聊天
 			clickGiveReward(e) {
+				login(this.$user.id)
 				console.log(e);
 				this.$myRequest({
 					url: '/immessagelist/save',
