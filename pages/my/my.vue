@@ -6,7 +6,7 @@
 		    <!-- <text>Amibition</text>   -->
 		    </view>
 		    <view class="margin-top-sm">
-		      <text>{{userNikename}}</text>
+		      <text style="color: #000000" >{{userNikename}}</text>
 		    </view>
 		    <image src="https://raw.githubusercontent.com/weilanwl/ColorUI/master/demo/images/wave.gif" mode="scaleToFill" class="gif-wave"></image>
 		  </view>

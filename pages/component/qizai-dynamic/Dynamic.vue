@@ -1,6 +1,7 @@
 <template>
 	<view class="dynamic" @click="clickDynamic()">
 		<view class="user__container">
+			
 			<view class="user__header-warp">
 				<!-- 头像组 -->
 				<view class="user__header" @click.stop="clickUser()">
@@ -65,6 +66,7 @@
 			</uni-grid>
 		</view>
 		<view class="bottom-line"></view>
+		
 	</view>
 </template>
 

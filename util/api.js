@@ -15,8 +15,18 @@ export const myRequest = (options) => {
 			},
 			success: (res) => { // 用箭头函数，res是返回来的数据
 				if (res.data.code !== 0) { // 如果请求失败，则给一个提示
+					console.log(res)
+					if(res.data.path=="/wine/login"){
+						return uni.showToast({
+							title: res.data.message,
+							icon: 'error',
+							duration: 1050
+						})
+					}
 					return uni.showToast({
-						title: '获取数据失败！'
+						title: '获取数据失败！',
+						icon: 'error',
+						duration: 850
 					})
 				}
 				resolve(res) //如果请求成功，调用resolve返回数据

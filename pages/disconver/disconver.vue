@@ -2,7 +2,7 @@
 
 
 	<!-- <bar></bar> -->
-	
+
 	<view class="">
 		<!-- 搜索 -->
 		<view class="cu-bar search bg-white" id="TabCurTab">
@@ -20,6 +20,33 @@
 				<input type="text" placeholder="搜索图片、文章、视频" confirm-type="search"></input>
 			</view>
 			<!-- <view class="cu-avatar round search_img" :style="item.userVo.userProtrait"></view> -->
+			<view class="user__header-warp">
+				<!-- 头像组 -->
+				<view class="user__header" @click="toggle('right')">
+					<image class="user__header-image" :src="avatar" mode="aspectFill"></image>
+				</view>
+			</view>
+
+			<!-- 普通弹窗 -->
+			<uni-popup ref="popup" background-color="#fff">
+				<view class="popup-content" style="width: 500rpx;"
+					:class="{ 'popup-height': type === 'left' || type === 'right' }">
+					<view class="user__header-warp">
+						<!-- 头像组 -->
+						<view class="user__header" @click="toggle('right')">
+							<image class="user__header-image"
+								src="https://www.homiesocial.cn/static/miniImage/3ee1244b-dd0e-4126-aa75-9aef696857c1.jpg"
+								mode="aspectFill"></image>
+						</view>
+						<view> 修改头像</view>
+						<view class="user__content">
+							<view class="user__content-main">
+								<text class="user__content-title uni-ellipsis">223</text>
+							</view>
+						</view>
+					</view>
+				</view>
+			</uni-popup>
 		</view>
 		<!-- 搜索end -->
 		<!-- 导航条 -->
@@ -39,6 +66,7 @@
 			@clickGiveReward="clickGiveReward(item.userVo.id)" @clickChat="clickChat(item.id)">
 		</Dynamic>
 		<denglu v-if="bannerShow"></denglu>
+		<uni-fab ref="fab" :horizontal="horizontal" :vertical="vertical" @fabClick="fabClick" />
 	</view>
 
 
@@ -50,7 +78,7 @@
 	import TopBar from "../component/topTab.vue";
 	import minSwiper from "../component/minSwiper.vue";
 	import Dynamic from '../component/qizai-dynamic/Dynamic.vue';
-	import denglu  from '../component/denglu.vue';
+	import denglu from '../component/denglu.vue';
 	import {
 		mapGetters,
 		mapMutations,
@@ -69,7 +97,11 @@
 	export default {
 		data() {
 			return {
-				bannerShow : true,
+				type: 'center',
+				horizontal: 'right',
+				vertical: 'bottom',
+				avatar: '',
+				bannerShow: true,
 				//图片
 				imgArr: [
 					'http://bpic.588ku.com/element_origin_min_pic/16/10/30/528aa13209e86d5d9839890967a6b9c1.jpg',
@@ -78,7 +110,7 @@
 				addr: "授权位置",
 				address: "未授权位置",
 				// 导航条
-				TabCur: '0',
+				TabCur: '2',
 				scrollLeft: 0,
 				// 导航条end
 				page: 1,
@@ -141,10 +173,26 @@
 			if (session) {
 				//检测当前用户登录态是否有效
 				this.bannerShow = false;
+				this.$myRequest({
+					url: '/getInfo',
+					methed: 'get'
+				}).then(res => {
+					console.log(res.data.user)
+					if(res.data.user==null){
+						uni.setStorageSync(TOKEN_KEY, "")
+					}else{
+						this.avatar=res.data.user.userProtrait;
+						this.userNikename=res.data.user.userNikename;
+						// this.$set(this.$data.list,"list",res.data.page.list)
+					}
+				
+				})
+				
+				
 			} else {
 				this.bannerShow = true;
 			}
-			
+
 			this.page = 1
 			this.$myRequest({
 				url: '/article/list',
@@ -230,6 +278,18 @@
 
 		},
 		methods: {
+
+			fabClick() {
+				uni.navigateTo({
+					url: `/pages/issue/issue`
+				})
+			},
+			toggle(type) {
+				this.type = type
+				// open 方法传入参数 等同在 uni-popup 组件上绑定 type属性
+				// console.log(this.$refs.popup)
+				this.$refs.popup.open(type)
+			},
 
 			// // 位置微调
 			handleSelect() {
@@ -415,9 +475,8 @@
 			},
 			// 导航条点击
 			tabSelect(e) {
-				// console.log(e) ;
-
-				this.TabCur = e.currentTarget.dataset.id
+				console.log(e.currentTarget.dataset.id) ;
+				this.TabCur = e.currentTarget.dataset.id+''
 
 			},
 		},
@@ -723,6 +782,39 @@
 		height: 1rpx;
 		background: gainsboro;
 	}
+
+	.user__header {
+		display: flex;
+		width: 45px;
+		height: 45px;
+		-webkit-border-radius: 5px;
+		border-color: #eee;
+		border-width: 1px;
+		border-style: solid;
+		overflow: hidden;
+		border-radius: 50px;
+	}
+
+	.user__header-image {
+		display: flex;
+		align-content: center;
+		-webkit-box-orient: horizontal;
+		-webkit-box-direction: normal;
+		flex-direction: row;
+		-webkit-box-pack: center;
+		justify-content: center;
+		-webkit-box-align: center;
+		align-items: center;
+		flex-wrap: wrap-reverse;
+		width: 45px;
+		height: 45px;
+		border-radius: 5px;
+		border-color: #eee;
+		border-width: 1px;
+		border-style: solid;
+		overflow: hidden;
+	}
+
 
 	/* end */
 </style>

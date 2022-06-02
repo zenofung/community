@@ -55,7 +55,6 @@
 		methods:{
 		// 导航条点击
 		  tabSelect(e) {
-		   console.log(e)
 		   this.$emit('click',e);//让父类使用改方法
 		    
 		  }
