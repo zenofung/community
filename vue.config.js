@@ -4,8 +4,8 @@ module.exports = {
 		disableHostCheck:true,
 		proxy:{
 			'/api':{
-				// target:'http://www.homiesocial.cn/wine',
-				target:'http://localhost:8080/wine',
+				target:'http://www.homiesocial.cn/wine',
+				// target:'http://localhost:8080/wine',
 				changeOrigin:true,
 				pathRewrite:{
 					'^/api': ''
